@@ -1,0 +1,819 @@
+/* ===========================
+   RESET
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#f5f5f5;
+    color:#333;
+    line-height:1.6;
+}
+
+/* ===========================
+   CABEÇALHO
+=========================== */
+
+header{
+    background:#ff6600;
+    color:#fff;
+    padding:18px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:999;
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
+}
+
+.header-left {
+    display:flex;
+    align-items:center;
+}
+
+.header-right {
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+header h1{
+    font-size:30px;
+}
+
+nav{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+nav a{
+    color:#fff;
+    text-decoration:none;
+    font-weight:bold;
+    transition:.3s;
+}
+
+nav a:hover{
+    color:#222;
+}
+
+/* ===========================
+   DROPDOWN MENU
+=========================== */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: .3s;
+    min-width: 45px;
+}
+
+.dropbtn:hover {
+    background: rgba(255,255,255,0.4);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: block;
+    font-weight: 500;
+    transition: .3s;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background-color: #ff6600;
+    color: white;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background: rgba(255,255,255,0.4);
+}
+
+/* ===========================
+   LINK LOGIN
+=========================== */
+
+.login-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 18px;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    transition: .3s;
+}
+
+.login-link:hover {
+    background: rgba(255,255,255,0.4);
+    color: #222;
+}
+
+/* ===========================
+   BANNER
+=========================== */
+
+.banner{
+
+    min-height:500px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    background:linear-gradient(rgba(0,0,0,.50),
+    rgba(0,0,0,.50)),
+    url("img/fachada.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    color:white;
+
+    padding:30px;
+
+    width:100%;
+
+}
+
+.banner h2{
+
+    font-size:55px;
+
+    margin-bottom:20px;
+
+}
+
+.banner p{
+
+    font-size:24px;
+
+    margin-bottom:35px;
+
+}
+
+.banner button{
+
+    background:#ff6600;
+
+    color:white;
+
+    border:none;
+
+    padding:16px 35px;
+
+    font-size:18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.banner button:hover{
+
+    background:#e45700;
+
+    transform:scale(1.05);
+
+}
+
+/* ===========================
+   SEÇÕES
+=========================== */
+
+section{
+
+    padding:70px 10%;
+
+}
+
+section h2{
+
+    text-align:center;
+
+    color:#ff6600;
+
+    margin-bottom:40px;
+
+    font-size:35px;
+
+}
+
+/* ===========================
+   SOBRE
+=========================== */
+
+.sobre-container{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:40px;
+
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 200px;
+}
+
+.logo-instituto {
+    max-width: 550px;
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,.2);
+    transition: transform .3s;
+    background: transparent;
+    padding: 0;
+}
+
+.logo-instituto:hover {
+    transform: scale(1.03);
+}
+
+.texto-sobre{
+
+    text-align:justify;
+
+    font-size:18px;
+
+}
+
+/* ===========================
+   CARDS
+=========================== */
+
+.clique{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+
+    gap:20px;
+
+}
+
+.card{
+
+    background:white;
+
+    padding:30px 20px;
+
+    text-align:center;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+
+}
+
+.card:hover{
+
+    background:#ff6600;
+
+    color:white;
+
+    transform:translateY(-8px);
+
+}
+
+/* ===========================
+   DETALHES CURSO
+=========================== */
+
+.detalhes{
+
+    margin-top:40px;
+
+    background:white;
+
+    padding:30px;
+
+    border-left:6px solid #ff6600;
+
+    border-radius:8px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+
+}
+
+.detalhes h3{
+
+    color:#ff6600;
+
+    margin-bottom:15px;
+
+}
+
+/* ===========================
+   TABELA
+=========================== */
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    background:white;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+
+}
+
+th{
+
+    background:#ff6600;
+
+    color:white;
+
+    padding:15px;
+
+}
+
+td{
+
+    padding:15px;
+
+    border:1px solid #ddd;
+
+    text-align:center;
+
+}
+
+tr:hover{
+
+    background:#fff3ea;
+
+}
+
+tr[style*="cursor:pointer;"]:hover{
+
+    background:#ffd4b3;
+
+    cursor:pointer;
+
+}
+
+/* ===========================
+   GALERIA
+=========================== */
+
+.galeria{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+    gap:25px;
+    margin-top:10px;
+}
+
+.galeria-item{
+    background:#f9f9f9;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+    transition:transform .3s;
+    cursor:pointer;
+}
+
+.galeria-item:hover{
+    transform:scale(1.03);
+}
+
+.galeria-item img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    display:block;
+}
+
+.galeria-item p{
+    padding:12px;
+    text-align:center;
+    font-weight:bold;
+    color:#333;
+    background:white;
+}
+
+/* ===========================
+   MODAL PARA IMAGENS
+=========================== */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9998;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+
+.modal-conteudo {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 85%;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.5);
+}
+
+.modal-fechar {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.modal-fechar:hover {
+    color: #ff6600;
+}
+
+/* ===========================
+   CONTATO
+=========================== */
+
+.contatos{
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:8px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+
+    margin-bottom:35px;
+
+}
+
+.contatos p{
+
+    margin-bottom:15px;
+
+    font-size:18px;
+
+}
+
+.contatos a:hover{
+
+    text-decoration:underline;
+
+}
+
+textarea{
+
+    width:100%;
+
+    height:160px;
+
+    padding:15px;
+
+    border-radius:8px;
+
+    border:1px solid #ccc;
+
+    resize:none;
+
+    font-size:16px;
+
+}
+
+button{
+
+    margin-top:20px;
+
+    background:#ff6600;
+
+    color:white;
+
+    border:none;
+
+    padding:15px 35px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    font-size:16px;
+
+}
+
+button:hover{
+
+    background:#e45700;
+
+}
+
+/* ===========================
+   HISTÓRICO
+=========================== */
+
+#historico{
+
+    margin-top:30px;
+
+}
+
+.mensagem{
+
+    background:white;
+
+    padding:18px;
+
+    border-left:5px solid #ff6600;
+
+    margin-bottom:15px;
+
+    border-radius:6px;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.1);
+
+}
+
+/* ===========================
+   RODAPÉ
+=========================== */
+
+footer{
+
+    background:#222;
+
+    color:white;
+
+    text-align:center;
+
+    padding:40px;
+
+    margin-top:50px;
+
+}
+
+footer h3{
+
+    color:#ff6600;
+
+    margin-bottom:10px;
+
+}
+
+/* ===========================
+   RESPONSIVO
+=========================== */
+
+@media(max-width:900px){
+
+header{
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+.header-right {
+    flex-direction:column;
+    gap:15px;
+}
+
+nav{
+
+    flex-wrap:wrap;
+    justify-content:center;
+
+}
+
+.banner{
+
+    min-height:350px;
+
+    background-size:cover;
+
+    background-position:center;
+
+}
+
+.banner h2{
+
+    font-size:30px;
+
+}
+
+.banner p{
+
+    font-size:18px;
+
+}
+
+.sobre-container{
+
+    flex-direction:column;
+
+}
+
+.logo-instituto {
+    max-width: 300px;
+}
+
+section{
+
+    padding:50px 7%;
+
+}
+
+.cards{
+
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+
+}
+
+table{
+
+    display:block;
+
+    overflow-x:auto;
+
+}
+
+.galeria{
+    grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.galeria-item img{
+    height:150px;
+}
+
+.modal-conteudo {
+    max-width: 95%;
+    max-height: 70%;
+}
+
+.modal-fechar {
+    font-size: 35px;
+    top: 15px;
+    right: 20px;
+}
+
+.dropdown-content {
+    left: 0;
+    right: auto;
+}
+
+section[style*="background:#ff6600"] {
+    padding: 40px 7%;
+}
+
+}
+
+@media(max-width:600px){
+
+.banner{
+
+    min-height:280px;
+
+}
+
+.banner h2{
+
+    font-size:24px;
+
+}
+
+.banner p{
+
+    font-size:16px;
+
+}
+
+.banner button{
+
+    padding:12px 25px;
+
+    font-size:14px;
+
+}
+
+.logo-instituto {
+
+    max-width: 220px;
+
+}
+
+.cards{
+
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+
+}
+
+.card{
+
+    padding:20px 15px;
+
+    font-size:14px;
+
+}
+
+.galeria{
+    grid-template-columns:1fr 1fr;
+}
+
+.galeria-item img{
+    height:120px;
+}
+
+.dropdown-content {
+    min-width: 160px;
+}
+
+.dropdown-content a {
+    padding: 10px 15px;
+    font-size: 14px;
+}
+
+section[style*="background:#ff6600"] {
+    padding: 30px 5%;
+}
+
+section[style*="background:#ff6600"] div div {
+    font-size: 35px !important;
+}
+
+section[style*="background:#ff6600"] p {
+    font-size: 14px !important;
+}
+
+}

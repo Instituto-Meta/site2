@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Instituto Meta</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Ajuste do cabeçalho - espaço laranja menor */
+        header {
+            padding: 10px 8% !important;
+        }
+
+        header h1 {
+            font-size: 24px !important;
+            margin: 0;
+        }
+
+        /* Ajuste da imagem da fachada (menor) */
+        .logo-header {
+            max-height: 50px;
+            width: auto;
+            border-radius: 4px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- CABEÇALHO -->
+
+    <header>
+
+        <div class="header-left">
+            <h1>Instituto Meta</h1>
+        </div>
+
+        <div class="header-right">
+            <nav>
+
+                <a href="#inicio">Início</a>
+
+                <div class="dropdown">
+                    <button class="dropbtn">:</button>
+                    <div class="dropdown-content">
+                        <a href="#sobre">Quem Somos</a>
+                        <a href="#parceria">Parceria UniFatecie</a>
+                        <a href="#cursos">Cursos</a>
+                        <a href="#contato">Contato</a>
+                        <a href="#faq">Perguntas Frequentes</a>
+                        <a href="#sugestoes">Sugestões</a>
+                    </div>
+                </div>
+
+                <!-- BOTÃO LOGIN -->
+                <a href="login.html" class="login-link">Login</a>
+
+            </nav>
+        </div>
+
+    </header>
+
+    <!-- BANNER -->
+
+    <section id="inicio" class="banner">
+
+        <div class="banner-texto">
+
+            <button onclick="irCursos()">
+
+                Conheça nossos cursos
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- SOBRE -->
+
+    <section id="sobre">
+
+        <h2>Quem Somos</h2>
+
+        <div class="sobre-container">
+
+            <div class="logo-container">
+                <img src="img/logo.png" alt="Instituto Meta - Logo" class="logo-instituto">
+            </div>
+
+            <div class="texto-sobre">
+
+                <p>
+
+                    O <strong>Instituto Meta</strong> nasceu com o objetivo de transformar vidas por
+                    meio da educação. Nossa história começou oferecendo o
+                    Ensino Médio na modalidade EJA (Educação de Jovens e Adultos),
+                    possibilitando que muitas pessoas concluíssem seus estudos.
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    Com o crescimento da instituição, passamos a oferecer cursos
+                    preparatórios para o ENEM, ampliando ainda mais as oportunidades
+                    para nossos alunos.
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    Hoje contamos também com cursos de Informática Básica e Avançada,
+                    preparando nossos estudantes para o mercado de trabalho e para
+                    as exigências do mundo digital.
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    O Instituto Meta trabalha em parceria com a
+                    <strong>UniFatecie</strong>, instituição de ensino superior
+                    reconhecida pelo MEC, oferecendo cursos de graduação e
+                    pós-graduação na modalidade EAD.
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    A UniFatecie é referência nacional em educação a distância,
+                    disponibilizando cursos de qualidade, professores qualificados,
+                    ambiente virtual moderno e diploma reconhecido em todo o Brasil.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- PARCERIA COM A UNIFATECIE -->
+
+    <section id="parceria" style="padding:70px 10%;">
+
+        <div style="text-align:center; background:white; padding:40px; border-radius:15px; box-shadow:0 5px 20px rgba(0,0,0,.12);">
+
+            <h2 style="color:#ff6600; margin-bottom:20px;">🌟 Parceria com a UniFatecie</h2>
+
+            <p style="font-size:18px; margin-bottom:30px; max-width:900px; margin-left:auto; margin-right:auto; line-height:1.8;">
+
+                O Instituto Meta é parceiro da <strong>UniFatecie</strong>, instituição de ensino superior reconhecida pelo MEC,
+
+                oferecendo cursos de graduação e pós-graduação na modalidade EAD com qualidade e excelência.
+
+                A UniFatecie é referência nacional em educação a distância, disponibilizando cursos de qualidade,
+
+                professores qualificados, ambiente virtual moderno e diploma reconhecido em todo o Brasil.
+
+            </p>
+
+            <a href="https://www.unifatecie.edu.br" target="_blank" 
+
+               style="display:inline-block; background:#ff6600; color:white; padding:15px 45px; 
+
+                      border-radius:8px; text-decoration:none; font-weight:bold; font-size:18px;
+
+                      transition:.3s;">
+
+                Conheça a UniFatecie
+
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- CURSOS -->
+
+    <section id="cursos">
+
+        <h2>Cursos Disponíveis na UniFatecie</h2>
+
+        <p class="clique">
+
+            Clique sobre um curso para conhecer mais.
+
+        </p>
+
+        <div class="cards">
+
+            <div class="card" onclick="abrirLink('https://site.unifatecie.edu.br/cursos-profissionalizantes-ead/')">
+
+                <h3>Cursos Profissionalizantes</h3>
+
+            </div>
+
+            <div class="card" onclick="abrirLink('https://site.unifatecie.edu.br/cursos-graduacao-ead/')">
+
+                <h3>Graduação</h3>
+
+            </div>
+
+            <div class="card" onclick="abrirLink('https://site.unifatecie.edu.br/cursos-pos-graduacao-ead/')">
+
+                <h3>Pós-graduação</h3>
+
+            </div>
+
+        </div>
+
+        <!-- Área dinâmica -->
+
+        <div id="detalhesCurso" class="detalhes">
+
+            <h3>Selecione um curso acima.</h3>
+
+            <p>
+
+                As informações aparecerão aqui.
+
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- TABELA -->
+
+    <section>
+
+        <h2>Cursos Oferecidos pela Meta</h2>
+
+        <table>
+
+            <tr>
+
+                <th>Curso</th>
+
+                <th>Modalidade</th>
+
+                <th>Duração</th>
+
+            </tr>
+
+            <tr onclick="abrirCurso('informatica-basica')" style="cursor:pointer;">
+
+                <td>Informática Básica</td>
+
+                <td>Presencial</td>
+
+                <td>4 meses</td>
+
+            </tr>
+
+            <tr onclick="abrirCurso('informatica-avancada')" style="cursor:pointer;">
+
+                <td>Informática Avançada</td>
+
+                <td>Presencial</td>
+
+                <td>6 meses</td>
+
+            </tr>
+
+            <tr onclick="abrirCurso('eja')" style="cursor:pointer;">
+
+                <td>EJA Ensino Médio</td>
+
+                <td>Semi EAD</td>
+
+                <td>18 meses</td>
+
+            </tr>
+
+            <tr onclick="abrirCurso('profissionalizante')" style="cursor:pointer;">
+
+                <td>Curso Profissionalizante</td>
+
+                <td>Presencial</td>
+
+                <td>Conforme o curso</td>
+
+            </tr>
+
+            <tr onclick="abrirCurso('tecnico')" style="cursor:pointer;">
+
+                <td>Curso Técnico</td>
+
+                <td>Presencial</td>
+
+                <td>Conforme o curso</td>
+
+            </tr>
+
+            <tr onclick="abrirCurso('graduacao')" style="cursor:pointer;">
+
+                <td>Graduação</td>
+
+                <td>EAD</td>
+
+                <td>Conforme o curso</td>
+
+            </tr>
+
+            <tr onclick="abrirCurso('pos')" style="cursor:pointer;">
+
+                <td>Pós-graduação</td>
+
+                <td>EAD</td>
+
+                <td>Conforme o curso</td>
+
+            </tr>
+
+        </table>
+
+        <br><br>
+
+        <div style="text-align:center; background:white; padding:30px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,.12);">
+
+            <h3 style="color:#ff6600; margin-bottom:25px;">📸 Imagens do Nosso Ambiente</h3>
+
+            <div class="galeria">
+
+                <div class="galeria-item" onclick="abrirImagem('img/aula.png')">
+                    <img src="img/aula.png" alt="Sala de Aula">
+                    <p>Sala de Aula</p>
+                </div>
+
+                <div class="galeria-item" onclick="abrirImagem('img/entrada.png')">
+                    <img src="img/entrada.png" alt="Entrada do Instituto">
+                    <p>Entrada</p>
+                </div>
+
+                <div class="galeria-item" onclick="abrirImagem('img/salainfo.png')">
+                    <img src="img/salainfo.png" alt="Sala de Informática">
+                    <p>Sala de Informática</p>
+                </div>
+
+                <div class="galeria-item" onclick="abrirImagem('img/direcao.png')">
+                    <img src="img/direcao.png" alt="Direção">
+                    <p>Direção</p>
+                </div>
+
+                <div class="galeria-item" onclick="abrirImagem('img/biblioteca.png')">
+                    <img src="img/biblioteca.png" alt="Biblioteca">
+                    <p>Biblioteca</p>
+                </div>
+
+                <div class="galeria-item" onclick="abrirImagem('img/sala1.png')">
+                    <img src="img/sala1.png" alt="Sala 1">
+                    <p>Sala 1</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <br><br>
+
+        <div style="text-align:center; background:#f9f9f9; padding:30px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,.12); border-left:4px solid #ff6600;">
+
+            <h3 style="color:#ff6600; margin-bottom:15px; font-size:24px;">Indique um Amigo e Ganhe Desconto!</h3>
+
+            <p style="font-size:16px; margin-bottom:10px; max-width:700px; margin-left:auto; margin-right:auto;">
+
+                Ao indicar um amigo, familiar ou colega para se matricular no Instituto Meta, 
+                você ganha <strong style="color:#ff6600;">desconto na parcela do seu curso</strong>.
+
+            </p>
+
+            <p style="font-size:14px; color:#888;">
+
+                * Consulte nossa equipe para mais detalhes sobre as condições da promoção.
+
+            </p>
+
+            <br>
+
+            <a href="#contato" style="display:inline-block; background:#ff6600; color:white; padding:12px 35px; border-radius:8px; text-decoration:none; font-weight:bold; font-size:16px; transition:.3s;"
+               onmouseover="this.style.background='#e45700'"
+               onmouseout="this.style.background='#ff6600'">
+
+                📞 Fale Conosco
+
+            </a>
+
+        </div>
+
+        <br><br>
+
+        <!-- FAQ - PERGUNTAS FREQUENTES -->
+
+        <div id="faq" style="background:white; padding:30px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,.12);">
+
+            <h2 style="color:#ff6600; margin-bottom:25px;">❓ Perguntas Frequentes</h2>
+
+            <div style="max-width:800px; margin:0 auto;">
+
+                <div onclick="toggleFaq(this)" 
+                     style="background:#f9f9f9; margin-bottom:10px; border-radius:8px; padding:15px 20px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.1); border-left:4px solid #ff6600;">
+
+                    <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:17px;">
+                        Como faço minha matrícula?
+                        <span style="color:#ff6600; font-size:20px; transition:.3s;">+</span>
+                    </div>
+
+                    <div class="faq-resposta" style="display:none; margin-top:12px; font-weight:normal; color:#555; line-height:1.6;">
+                        Acesse o site, preencha o formulário de contato ou entre em contato pelo WhatsApp (91) 98440-0383 que nossa equipe irá te auxiliar com todo o processo de matrícula.
+                    </div>
+
+                </div>
+
+                <div onclick="toggleFaq(this)" 
+                     style="background:#f9f9f9; margin-bottom:10px; border-radius:8px; padding:15px 20px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.1); border-left:4px solid #ff6600;">
+
+                    <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:17px;">
+                        Quais os horários de atendimento?
+                        <span style="color:#ff6600; font-size:20px; transition:.3s;">+</span>
+                    </div>
+
+                    <div class="faq-resposta" style="display:none; margin-top:12px; font-weight:normal; color:#555; line-height:1.6;">
+                        Atendemos de segunda a sexta-feira, das 8h às 22h, e aos sábados das 8h às 12h. Nossa equipe está pronta para atender você!
+                    </div>
+
+                </div>
+
+                <div onclick="toggleFaq(this)" 
+                     style="background:#f9f9f9; margin-bottom:10px; border-radius:8px; padding:15px 20px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.1); border-left:4px solid #ff6600;">
+
+                    <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:17px;">
+                        Os cursos têm certificado?
+                        <span style="color:#ff6600; font-size:20px; transition:.3s;">+</span>
+                    </div>
+
+                    <div class="faq-resposta" style="display:none; margin-top:12px; font-weight:normal; color:#555; line-height:1.6;">
+                        Sim! Todos os nossos cursos oferecem certificado de conclusão reconhecido, validando suas habilidades e conhecimentos para o mercado de trabalho.
+                    </div>
+
+                </div>
+
+                <div onclick="toggleFaq(this)" 
+                     style="background:#f9f9f9; margin-bottom:10px; border-radius:8px; padding:15px 20px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.1); border-left:4px solid #ff6600;">
+
+                    <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:17px;">
+                        Quais formas de pagamento são aceitas?
+                        <span style="color:#ff6600; font-size:20px; transition:.3s;">+</span>
+                    </div>
+
+                    <div class="faq-resposta" style="display:none; margin-top:12px; font-weight:normal; color:#555; line-height:1.6;">
+                        Aceitamos pagamento em dinheiro, PIX, cartão de débito e crédito (parcelado). Consulte nossa equipe para mais detalhes sobre condições especiais.
+                    </div>
+
+                </div>
+
+                <div onclick="toggleFaq(this)" 
+                     style="background:#f9f9f9; margin-bottom:10px; border-radius:8px; padding:15px 20px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.1); border-left:4px solid #ff6600;">
+
+                    <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:17px;">
+                        Os cursos EJA têm aulas presenciais?
+                        <span style="color:#ff6600; font-size:20px; transition:.3s;">+</span>
+                    </div>
+
+                    <div class="faq-resposta" style="display:none; margin-top:12px; font-weight:normal; color:#555; line-height:1.6;">
+                        Sim! O Ensino Médio EJA é na modalidade Semi EAD, com aulas presenciais a cada 15 dias, oferecendo flexibilidade e acompanhamento pedagógico.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- SUGESTÕES -->
+    <section id="sugestoes" style="background:#f5f5f5; padding:40px 10%;">
+
+        <div style="max-width:900px; margin:0 auto;">
+
+            <h2 style="text-align:center; color:#ff6600; margin-bottom:30px; font-size:32px;">💡 Deixe sua Sugestão</h2>
+
+            <!-- Botão para abrir o formulário -->
+            <div style="text-align:center; margin-bottom:30px;">
+                <button onclick="toggleFormSugestao()" id="btnAbrirSugestao" 
+                        style="background:#ff6600; color:white; border:none; padding:15px 50px; border-radius:8px; font-size:18px; font-weight:bold; cursor:pointer; transition:.3s;">
+                    ✏️ Enviar Sugestão
+                </button>
+            </div>
+
+            <!-- Formulário de Sugestão (escondido inicialmente) -->
+            <div id="formSugestao" style="display:none; background:white; padding:30px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,.12); margin-bottom:30px;">
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h3 style="color:#ff6600; margin:0;">✏️ Escreva sua Sugestão</h3>
+                    <button onclick="toggleFormSugestao()" style="background:none; border:none; font-size:28px; color:#999; cursor:pointer; transition:.3s;">&times;</button>
+                </div>
+
+                <div style="margin-bottom:15px;">
+                    <label style="display:block; font-weight:bold; margin-bottom:5px; font-size:14px;">Seu Nome (opcional)</label>
+                    <input type="text" id="nomeSugestao" placeholder="Digite seu nome" 
+                           style="width:100%; padding:12px; border:2px solid #ddd; border-radius:8px; font-size:16px; outline:none; transition:.3s;"
+                           onfocus="this.style.borderColor='#ff6600'" onblur="this.style.borderColor='#ddd'">
+                </div>
+
+                <div style="margin-bottom:15px;">
+                    <label style="display:block; font-weight:bold; margin-bottom:5px; font-size:14px;">Sua Sugestão *</label>
+                    <textarea id="textoSugestao" placeholder="Escreva sua sugestão aqui..." 
+                              style="width:100%; height:120px; padding:12px; border:2px solid #ddd; border-radius:8px; font-size:16px; resize:none; outline:none; transition:.3s;"
+                              onfocus="this.style.borderColor='#ff6600'" onblur="this.style.borderColor='#ddd'"></textarea>
+                </div>
+
+                <button onclick="enviarSugestao()" 
+                        style="background:#27ae60; color:white; border:none; padding:14px 40px; border-radius:8px; font-size:18px; font-weight:bold; cursor:pointer; transition:.3s;">
+                    📤 Enviar Sugestão
+                </button>
+
+                <div id="mensagemSugestao" style="margin-top:15px; font-weight:bold;"></div>
+            </div>
+
+            <!-- Lista de Sugestões -->
+            <div style="background:white; padding:30px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,.12);">
+
+                <h3 style="color:#ff6600; margin-bottom:20px;">💬 Sugestões dos Visitantes</h3>
+
+                <div id="listaSugestoes">
+                    <p style="text-align:center; color:#999; padding:20px;">Carregando sugestões...</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- CONTATO -->
+
+    <section id="contato">
+
+        <h2>Entre em Contato</h2>
+
+        <div class="contatos">
+
+            <p><strong>📍 Endereço:</strong> <a href="https://www.google.com/maps?q=-2.272506815434563,-46.97085048142094" target="_blank" style="color:#ff6600; text-decoration:none; font-weight:bold;">Instituto Meta</a></p>
+
+            <p><strong>📱 WhatsApp:</strong> <a href="https://wa.me/5591984400383" target="_blank" style="color:#ff6600; text-decoration:none; font-weight:bold;">(91) 98440-0383</a></p>
+
+            <p><strong>📷 Instagram:</strong> <a href="https://www.instagram.com/institutometa.nep" target="_blank" style="color:#ff6600; text-decoration:none; font-weight:bold;">@institutometa.nep</a></p>
+
+            <p><strong>✉ Email:</strong> escolameta.meta@gmail.com</p>
+
+        </div>
+
+    </section>
+
+    <!-- RODAPÉ -->
+
+    <footer>
+
+        <h3>Instituto Meta</h3>
+
+        <p>
+
+            Educação transformando vidas.
+
+        </p>
+
+        <br>
+
+        <p>
+
+            © 2026 - Todos os direitos reservados.
+
+        </p>
+
+    </footer>
+
+    <!-- MODAL PARA IMAGENS -->
+
+    <div id="modalImagem" class="modal" onclick="fecharModal()">
+        <span class="modal-fechar" onclick="fecharModal()">&times;</span>
+        <img class="modal-conteudo" id="modalImg">
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        // ============================
+        // FUNÇÕES DO SITE
+        // ============================
+
+        function irCursos() {
+            document.getElementById("cursos").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+
+        function abrirLink(url) {
+            window.open(url, "_blank");
+        }
+
+        // ============================
+        // MODAL PARA IMAGENS
+        // ============================
+
+        function abrirImagem(src) {
+            let modal = document.getElementById('modalImagem');
+            let img = document.getElementById('modalImg');
+            modal.style.display = 'block';
+            img.src = src;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModal() {
+            document.getElementById('modalImagem').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                fecharModal();
+            }
+        });
+
+        // ============================
+        // FAQ - PERGUNTAS FREQUENTES
+        // ============================
+
+        function toggleFaq(elemento) {
+            let resposta = elemento.querySelector('.faq-resposta');
+            let span = elemento.querySelector('span');
+
+            if (resposta.style.display === 'none' || resposta.style.display === '') {
+                resposta.style.display = 'block';
+                span.textContent = '−';
+            } else {
+                resposta.style.display = 'none';
+                span.textContent = '+';
+            }
+        }
+
+        // ============================
+        // INFORMAÇÕES DOS CURSOS (TABELA)
+        // ============================
+
+        const cursosTabela = {
+            'informatica-basica': {
+                titulo: "Informática Básica",
+                texto: "Curso introdutório para iniciantes. Aprenda os fundamentos da informática: sistema operacional Windows, navegação na internet, uso do pacote Office (Word, Excel, PowerPoint), digitação, organização de arquivos e pastas, e noções de segurança digital. Duração: 4 meses. Modalidade: Presencial."
+            },
+            'informatica-avancada': {
+                titulo: "Informática Avançada",
+                texto: "Curso para quem já possui conhecimentos básicos e deseja se aprofundar. Conteúdo: Excel avançado (fórmulas, gráficos, tabelas dinâmicas), PowerPoint profissional, Canva para design, gerenciamento de arquivos em nuvem, noções de programação básica e ferramentas de produtividade. Duração: 6 meses. Modalidade: Presencial."
+            },
+            eja: {
+                titulo: "Ensino Médio EJA",
+                texto: "Ideal para jovens e adultos que desejam concluir o Ensino Médio. A modalidade é Semi EAD, com aulas presenciais a cada 15 dias, oferecendo flexibilidade e acompanhamento pedagógico com certificado reconhecido. Duração: 18 meses.",
+                disciplinas: [
+                    'Língua Portuguesa 1',
+                    'Matemática 1',
+                    'História',
+                    'Geografia',
+                    'Química',
+                    'Física',
+                    'Biologia',
+                    'Língua Inglesa',
+                    'Língua Espanhola',
+                    'Artes',
+                    'Educação Física',
+                    'Filosofia',
+                    'Sociologia',
+                    'Língua Portuguesa 2',
+                    'Matemática 2',
+                    'Redação',
+                    'Empreendedorismo',
+                    'Projeto de Vida',
+                    'Educação Digital',
+                    'Meio Ambiente e Sustentabilidade'
+                ]
+            },
+            profissionalizante: {
+                titulo: "Cursos Profissionalizantes",
+                texto: "Cursos voltados para a formação rápida e prática em diversas áreas do mercado de trabalho. Oferecemos cursos como: Assistente Administrativo, Auxiliar de Recursos Humanos, Assistente de Logística, Operador de Computador, Auxiliar de Enfermagem, entre outros. Duração: 3 a 6 meses. Modalidade: Presencial."
+            },
+            tecnico: {
+                titulo: "Cursos Técnicos",
+                texto: "Cursos de nível médio que preparam o aluno para atuar em áreas específicas do mercado. Oferecemos: Técnico em Informática, Técnico em Administração, Técnico em Enfermagem, Técnico em Logística, Técnico em Segurança do Trabalho, Técnico em Radiologia, entre outros. Duração: 12 a 18 meses. Modalidade: Presencial com estágio supervisionado."
+            },
+            graduacao: {
+                titulo: "🎓 Cursos de Graduação - UniFatecie EAD",
+                texto: "Confira abaixo todos os cursos de graduação disponíveis na UniFatecie EAD, organizados por categoria.",
+                categorias: {
+                    'TECNÓLOGOS': [
+                        "Design de Produto", "Jogos Digitais", "Produção Publicitária", "Segurança no Trânsito",
+                        "Agente Comunitário", "Processos Escolares", "Análise e Desenvolvimento de Sistemas",
+                        "Ciência do Futuro", "Comércio Exterior", "Design de Interiores", "Design de Moda",
+                        "Design Gráfico", "Gastronomia", "Gestão Ambiental", "Gestão Comercial",
+                        "Gestão da Qualidade", "Gestão de Produção Industrial", "Gestão de Recursos Humanos",
+                        "Gestão do Agronegócio", "Gestão Financeira", "Gestão Hospitalar", "Gestão Pública",
+                        "Hotelaria", "Investigação Forense e Perícia Criminal", "Logística", "Marketing",
+                        "Negócios Imobiliários", "Podologia", "Segurança da Informação", "Processos Gerenciais",
+                        "Processos Químicos", "Secretariado", "Segurança do Trabalho", "Segurança Pública",
+                        "Sistemas para Internet", "Estética e Cosmética", "Terapias Integrativas e Complementares",
+                        "Radiologia", "Gestão de Segurança Privada"
+                    ],
+                    'BACHARELADO': [
+                        "Ciências Econômicas", "Teologia", "Administração", "Artes Visuais", "Biblioteconomia",
+                        "Ciências Biológicas", "Ciências Contábeis", "Educação Física", "Química", "Jornalismo",
+                        "Psicopedagogia", "Publicidade e Propaganda", "Serviço Social", "Sistemas de Informação",
+                        "Engenharia de Produção", "Engenharia Ambiental e Sanitária", "Engenharia de Software",
+                        "Arquitetura e Urbanismo", "Engenharia Agronômica (Agronomia)", "Engenharia Civil",
+                        "Engenharia da Computação", "Engenharia Elétrica", "Engenharia Mecânica", "Psicanálise"
+                    ],
+                    'LICENCIATURAS': [
+                        "Educação Especial", "Sociologia", "Artes", "Ciências Biológicas", "Educação Física",
+                        "Filosofia", "Geografia", "História", "Letras (Português/Inglês)",
+                        "Letras (Português/Libras)", "Matemática", "Música", "Pedagogia"
+                    ],
+                    '2ª GRADUAÇÃO': [
+                        "Administração - Segunda Graduação p/ Bacharéis e Tecnólogos na Área de Gestão",
+                        "Ciências Contábeis - Segunda Graduação p/ Bacharéis e Tecnólogos na Área de Gestão",
+                        "Artes p/Licenciados", "Ciências Biológicas p/ Licenciados",
+                        "Educação Física (Bacharelado p/ Licenciados em Educação Física)",
+                        "Educação Física (Licenciatura p/ Bacharéis em Educação Física)",
+                        "Filosofia p/ Licenciados", "Geografia p/ Licenciados", "História p/ Licenciados",
+                        "Letras (Português/Inglês) p/ Licenciados", "Letras (Português/Libras) p/ Licenciados",
+                        "Matemática p/ Licenciados", "Pedagogia p/ Licenciados", "Sociologia p/ Licenciados"
+                    ]
+                }
+            },
+            pos: {
+                titulo: "📈 Cursos de Pós-Graduação - UniFatecie EAD",
+                texto: "Confira abaixo todos os cursos de pós-graduação disponíveis na UniFatecie EAD, organizados por área.",
+                categorias: {
+                    '🏢 EMPRESARIAL': [
+                        "Gestão e Qualidade em Saúde Pública", "Inovação Estratégica e Design Digital",
+                        "Agricultura e Manejo Sustentável", "Comércio Global 360: Marketing Internacional e Negócios Internacionais",
+                        "Comunicação e Liderança: Gestão Estratégica", "Desenvolvimento Pessoal e Gestão de Carreira",
+                        "Design Criativo", "Edtech e Gestão Inovadora", "Engenharia de Software e Segurança da Informação",
+                        "Estratégias Transformadoras em Políticas Públicas e Gestão Social",
+                        "Finanças Integradas, Corporativas e Públicas", "Gestão de Conflitos e Desenvolvimento Organizacional",
+                        "Gestão de Operações de Exportação", "Gestão de Operações Logísticas",
+                        "Gestão de Pessoas e Desenvolvimento Humano", "Gestão de Unidades de Conservação",
+                        "Liderança Corporativa", "Liderança de Projetos e Inovação Estratégica",
+                        "Master em Gestão Social e Políticas Públicas", "Master em Marketing e Inteligência de Mercado",
+                        "MBA em Estratégias Avançadas de Operações e Logística Integrada",
+                        "MBA em Gestão Avançada e Liderança Transformadora",
+                        "MBA em Gestão Contábil e Auditoria Avançada", "MBA em Gestão da Qualidade e Auditoria"
+                    ],
+                    '🏥 SAÚDE': [
+                        "Saúde Integrada e Bem-Estar do Idoso", "Administração Hospitalar e Serviços de Saúde",
+                        "Auditoria em Saúde", "Biociência Avançada: Tecnologias Biológicas",
+                        "Cuidados Avançados: Pré e Pós-Operatório em Estética Facial e Corporal",
+                        "Diagnóstico Avançado: Análises Clínicas e Laboratoriais", "Enfermagem do Trabalho",
+                        "Envelhecimento Saudável: Prevenção, Tratamento e Cuidado",
+                        "Gastronomia: Nutrição Humana e Educação Alimentar", "Gestão Hospitalar",
+                        "Gestão Integrada: Segurança e Saúde Ocupacional no Ambiente Corporativo",
+                        "Nutrição Clínica e Dietética", "Psicologia Clínica", "Psicologia Clínica e Saúde Mental",
+                        "Saúde Ocupacional: Ginástica Laboral, Ergonomia e Performance no Ambiente de Trabalho",
+                        "Saúde Pública", "Serviço Social e Políticas Públicas com Ênfase em Saúde", "Zoologia"
+                    ],
+                    '🔧 ENGENHARIA': [
+                        "Arquitetura e Urbanismo", "Construções Verdes", "Sustentabilidade e Responsabilidade Ambiental",
+                        "Engenharia de Gerenciamento de Obras", "Engenharia de Gerenciamento de Projetos",
+                        "Engenharia de Segurança Contra Incêndio e Pânico", "Engenharia de Segurança do Trabalho",
+                        "Engenharia de Software", "Gestão Estratégica de Projetos",
+                        "MBA em Gestão de Produção Industrial", "Segurança e Eficiência na Produção: Gestão de Riscos"
+                    ],
+                    '📚 EDUCAÇÃO': [
+                        "Alfabetização e Letramento", "Aprendizagem Contínua: Metodologia do Ensino de História para Professores",
+                        "Aprendizagem Organizacional", "Artes e Ludicidade", "Atendimento Educacional Especializado - AEE",
+                        "Biblioteconomia e Gestão de Bibliotecas", "Didática e Metodologia do Ensino Básico e Superior",
+                        "EAD e Novas Tecnologias Educacionais", "Educação 5.0 - Metodologias e Tecnologias Inovadoras",
+                        "Educação de Jovens e Adultos", "Educação Digital e Inovação Pedagógica", "Educação do Futuro",
+                        "Educação Especial (Atendimento às Necessidades Especiais)",
+                        "Educação Especial e Inclusiva - Neuropedagogia e Psicomotricidade",
+                        "Educação Física: Abordagens Pedagógicas", "Educação Infantil", "Educação Infantil e Alfabetização",
+                        "Educação no Campo", "Ensino de Inglês", "Ensino Religioso", "Filosofia: Tradições e Reflexões",
+                        "Future Thinking: Pensamento e Estudo do Futuro", "Gestão da Aprendizagem e Inovação Tecnológica na Educação",
+                        "Gestão Escolar", "Língua Portuguesa: Redação Avançada", "Literatura Brasileira e Internacional",
+                        "Literatura e Cultura", "Ludopedagogia", "MBA em Ciências da Computação para Licenciados",
+                        "MBA em Educação Executiva", "Mediação para o Ensino a Distância: Inovação",
+                        "Metodologia do Ensino de Biologia e Ciências", "Metodologia do Ensino de Geografia",
+                        "Metodologia do Ensino de Matemática", "Metodologias Avançadas em Métodos de Ensino de Inglês",
+                        "Neuroaprendizagem", "Neuropsicologia Educacional", "Pedagogia e Inclusão: Educação Especial",
+                        "Psicopedagogia Clínica", "Psicopedagogia e Práticas Educacionais",
+                        "Psicopedagogia Institucional e Clínica", "Sociologia na Educação", "Teologia Cristã e Estudos Bíblicos Avançados",
+                        "Terapia Ocupacional com Ênfase em Educação Especial e Inclusiva",
+                        "Transtorno do Espectro Autista - TEA", "Educação Física e Psicomotricidade",
+                        "Educação Física Escolar", "Personal Trainer", "Treinamento Resistido e Aeróbio"
+                    ],
+                    '⚖️ DIREITO': [
+                        "Direito Constitucional e Prática Trabalhista", "Direito do Trabalho e Previdenciário",
+                        "Direito Penal", "Direito Tributário e Direito Empresarial",
+                        "Direito, Psicologia e Gestão de Conflitos Laborais", "Gestão e Direito Penal e Trabalhista",
+                        "Saúde Ocupacional e Direito do Trabalho", "Segurança Jurídica e Bem-Estar no Trabalho",
+                        "Segurança Pública"
+                    ],
+                    '💼 NEGÓCIOS E TECNOLOGIAS': [
+                        "Auditoria, Contabilidade e Perícia Contábil", "Comunicação e Mídias Digitais",
+                        "Controladoria e Custos", "Criação e Desenvolvimento de Produtos", "Empreendedorismo e Inovação",
+                        "Gestão Comercial e Vendas", "Gestão de Cooperativas", "Gestão de Cooperativas de Crédito",
+                        "Gestão de Tecnologia da Informação - T.I.", "Gestão de Agronegócio", "Gestão Empresarial",
+                        "Gestão Estratégica de Pessoas", "Gestão Financeira", "Gestão Pública", "Logística e Operações",
+                        "Marketing Digital", "Negócios Imobiliários", "Psicologia Organizacional"
+                    ]
+                }
+            }
+        };
+
+        // ============================
+        // FUNÇÃO AUXILIAR PARA GERAR CAIXINHAS DE CURSOS
+        // ============================
+
+        function gerarCaixinhasCursos(listaCursos) {
+            return listaCursos.map(curso => `
+                <div style="background: white; padding: 10px 14px; border-radius: 6px; border-left: 4px solid #ff6600; font-size: 14px; color: #333; box-shadow: 0 1px 4px rgba(0,0,0,0.05);">
+                    ${curso}
+                </div>
+            `).join('');
+        }
+
+        // ============================
+        // ABRIR CURSO (TABELA)
+        // ============================
+
+        function abrirCurso(nomeCurso) {
+            let curso = cursosTabela[nomeCurso];
+            if (!curso) {
+                alert("Curso não encontrado!");
+                return;
+            }
+
+            let novaAba = window.open("", "_blank");
+            let textoFormatado = curso.texto.replace(/\n/g, '<br>');
+
+            // Gerar HTML das disciplinas em caixinhas
+            let disciplinasHtml = '';
+            if (curso.disciplinas && curso.disciplinas.length > 0) {
+                disciplinasHtml = `
+                    <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: left;">
+                        <h4 style="color: #ff6600; margin-bottom: 15px; font-size: 20px; text-align: center;">📚 Disciplinas do Curso</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px;">
+                            ${gerarCaixinhasCursos(curso.disciplinas)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Gerar HTML das categorias de cursos (Graduação e Pós)
+            let categoriasHtml = '';
+            if (curso.categorias) {
+                for (let categoria in curso.categorias) {
+                    categoriasHtml += `
+                        <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: left;">
+                            <h4 style="color: #ff6600; margin-bottom: 15px; font-size: 20px; text-align: center;">${categoria}</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px;">
+                                ${gerarCaixinhasCursos(curso.categorias[categoria])}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            novaAba.document.write(`
+                <!DOCTYPE html>
+                <html lang="pt-BR">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${curso.titulo} - Instituto Meta</title>
+                    <style>
+                        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+                        body { background: #f5f5f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 30px; }
+                        .container { background: white; max-width: 1000px; width:100%; padding: 50px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,.2); text-align: center; }
+                        .container h1 { color: #ff6600; font-size: 36px; margin-bottom: 10px; }
+                        .container .icone { font-size: 60px; margin-bottom: 20px; }
+                        .container .linha { width: 60px; height: 4px; background: #ff6600; margin: 15px auto; border-radius: 2px; }
+                        .container p { font-size: 16px; line-height: 1.8; color: #333; text-align: center; margin-top: 20px; }
+                        .container .btn { display: inline-block; margin-top: 30px; background: #ff6600; color: white; padding: 12px 35px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: .3s; border: none; cursor: pointer; font-size: 16px; }
+                        .container .btn:hover { background: #e45700; transform: scale(1.05); }
+                        .footer { margin-top: 30px; font-size: 14px; color: #999; }
+                        @media(max-width:600px){ .container { padding: 20px; } .container p { font-size: 14px; } .container h1 { font-size: 24px; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="icone">
+                            ${nomeCurso === 'informatica-basica' ? '💻' : 
+                              nomeCurso === 'informatica-avancada' ? '🚀' : 
+                              nomeCurso === 'eja' ? '📚' : 
+                              nomeCurso === 'profissionalizante' ? '🔧' :
+                              nomeCurso === 'tecnico' ? '⚙️' : 
+                              nomeCurso === 'graduacao' ? '🎓' :
+                              nomeCurso === 'pos' ? '📈' : '📖'}
+                        </div>
+                        <h1>${curso.titulo}</h1>
+                        <div class="linha"></div>
+                        <p>${textoFormatado}</p>
+                        ${disciplinasHtml}
+                        ${categoriasHtml}
+                        <button onclick="window.close()" class="btn">🔙 Fechar Janela</button>
+                        <div class="footer">Instituto Meta - Educação transformando vidas</div>
+                    </div>
+                    <script>
+                        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { window.close(); } });
+                    <\/script>
+                </body>
+                </html>
+            `);
+            novaAba.document.close();
+        }
+
+        // ============================
+        // SUGESTÕES - FUNÇÕES
+        // ============================
+
+        function toggleFormSugestao() {
+            var form = document.getElementById('formSugestao');
+            var btn = document.getElementById('btnAbrirSugestao');
+            
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+                btn.textContent = '✖ Fechar Formulário';
+                btn.style.background = '#e74c3c';
+                setTimeout(function() {
+                    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            } else {
+                form.style.display = 'none';
+                btn.textContent = '✏️ Enviar Sugestão';
+                btn.style.background = '#ff6600';
+            }
+        }
+
+        function carregarSugestoes() {
+            var lista = document.getElementById('listaSugestoes');
+
+            db.collection('sugestoes').orderBy('data', 'desc').limit(10).get()
+                .then(function(snapshot) {
+                    if (snapshot.empty) {
+                        lista.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">Nenhuma sugestão ainda. Seja o primeiro a deixar sua opinião!</p>';
+                        return;
+                    }
+
+                    var html = '';
+                    snapshot.forEach(function(doc) {
+                        var sugestao = doc.data();
+                        html += `
+                            <div style="background:#f9f9f9; padding:18px; border-radius:8px; margin-bottom:12px; border-left:4px solid #ff6600; box-shadow:0 2px 6px rgba(0,0,0,.06);">
+                                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:5px;">
+                                    <strong style="color:#ff6600;">👤 ${sugestao.nome || 'Anônimo'}</strong>
+                                    <small style="color:#888;">${sugestao.data ? new Date(sugestao.data.seconds * 1000).toLocaleDateString('pt-BR') : ''}</small>
+                                </div>
+                                <p style="margin-top:6px; font-size:15px; line-height:1.5;">${sugestao.texto}</p>
+                            </div>
+                        `;
+                    });
+
+                    lista.innerHTML = html;
+                })
+                .catch(function(error) {
+                    console.error('Erro ao carregar sugestões:', error);
+                    lista.innerHTML = '<p style="text-align:center; color:#e74c3c; padding:20px;">❌ Erro ao carregar sugestões.</p>';
+                });
+        }
+
+        function enviarSugestao() {
+            var nome = document.getElementById('nomeSugestao').value.trim();
+            var texto = document.getElementById('textoSugestao').value.trim();
+            var mensagem = document.getElementById('mensagemSugestao');
+
+            if (texto === '') {
+                mensagem.style.color = '#e74c3c';
+                mensagem.textContent = '⚠️ Por favor, escreva sua sugestão.';
+                return;
+            }
+
+            if (nome === '') {
+                nome = 'Anônimo';
+            }
+
+            db.collection('sugestoes').add({
+                nome: nome,
+                texto: texto,
+                data: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(function() {
+                mensagem.style.color = '#27ae60';
+                mensagem.textContent = '✅ Sugestão enviada com sucesso! Obrigado por contribuir.';
+                document.getElementById('nomeSugestao').value = '';
+                document.getElementById('textoSugestao').value = '';
+                carregarSugestoes();
+                setTimeout(function() {
+                    toggleFormSugestao();
+                    mensagem.textContent = '';
+                }, 2000);
+            })
+            .catch(function(error) {
+                mensagem.style.color = '#e74c3c';
+                mensagem.textContent = '❌ Erro ao enviar sugestão: ' + error.message;
+            });
+        }
+
+        // ============================
+        // INICIAR
+        // ============================
+
+        window.onload = function() {
+            carregarSugestoes();
+        };
+    </script>
+
+</body>
+
+</html>

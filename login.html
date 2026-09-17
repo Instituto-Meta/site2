@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Instituto Meta</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img/fachada.png');
+            background-size: cover;
+            background-position: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 15px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .login-container h1 {
+            color: #ff6600;
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .login-container .subtitulo {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .login-container .linha {
+            width: 50px;
+            height: 3px;
+            background: #ff6600;
+            margin: 10px auto 25px;
+            border-radius: 2px;
+        }
+
+        .opcoes-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .opcao-login {
+            padding: 25px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .3s;
+            background: #f9f9f9;
+        }
+
+        .opcao-login:hover {
+            border-color: #ff6600;
+            background: #fff3ea;
+            transform: scale(1.03);
+        }
+
+        .opcao-login.selecionado {
+            border-color: #ff6600;
+            background: #ff6600;
+            color: white;
+        }
+
+        .opcao-login .icone {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .opcao-login .rotulo {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .campo-login {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .campo-login label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .campo-login input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: .3s;
+            outline: none;
+        }
+
+        .campo-login input:focus {
+            border-color: #ff6600;
+            box-shadow: 0 0 10px rgba(255,102,0,0.2);
+        }
+
+        .campo-login input::placeholder {
+            color: #aaa;
+        }
+
+        .campo-login input[type="email"] {
+            letter-spacing: 0;
+        }
+
+        .campo-login input[type="password"] {
+            letter-spacing: 0;
+        }
+
+        .campo-login input[type="text"] {
+            letter-spacing: 2px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .3s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            background: #e45700;
+            transform: scale(1.02);
+        }
+
+        .btn-voltar {
+            display: inline-block;
+            margin-top: 15px;
+            color: #ff6600;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .btn-voltar:hover {
+            text-decoration: underline;
+        }
+
+        .mensagem-erro {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .mensagem-sucesso {
+            color: #27ae60;
+            text-align: center;
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .campo-login input[readonly] {
+            background: #f0f0f0;
+            cursor: not-allowed;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading-overlay .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6600;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-overlay p {
+            margin-top: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .campos-admin {
+            display: none;
+        }
+
+        .campos-admin.ativo {
+            display: block;
+        }
+
+        .campos-aluno {
+            display: none;
+        }
+
+        .campos-aluno.ativo {
+            display: block;
+        }
+
+        @media(max-width:600px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            .login-container h1 {
+                font-size: 26px;
+            }
+            .opcoes-login {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- LOADING OVERLAY -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>🔄 Autenticando, aguarde...</p>
+    </div>
+
+    <div class="login-page">
+
+        <div class="login-container">
+
+            <h1>Login</h1>
+            <p class="subtitulo">Instituto Meta</p>
+            <div class="linha"></div>
+
+            <!-- Opções de Login -->
+            <div class="opcoes-login">
+                <div class="opcao-login" id="opcaoAdmin" onclick="selecionarOpcao('admin')">
+                    <span class="icone">👨‍💼</span>
+                    <span class="rotulo">Administrador</span>
+                </div>
+                <div class="opcao-login" id="opcaoAluno" onclick="selecionarOpcao('aluno')">
+                    <span class="icone">👨‍🎓</span>
+                    <span class="rotulo">Aluno</span>
+                </div>
+            </div>
+
+            <!-- Campo de Login - ADMIN -->
+            <div id="camposAdmin" class="campos-admin">
+                <div class="campo-login">
+                    <label>E-mail</label>
+                    <input type="email" id="emailAdmin" placeholder="Digite seu e-mail">
+                </div>
+                <div class="campo-login">
+                    <label>Senha</label>
+                    <input type="password" id="senhaAdmin" placeholder="Digite sua senha">
+                </div>
+                <button class="btn-login" onclick="fazerLoginAdmin()">Entrar como Admin</button>
+            </div>
+
+            <!-- Campo de Login - ALUNO -->
+            <div id="camposAluno" class="campos-aluno">
+                <div class="campo-login">
+                    <label>CPF (11 dígitos)</label>
+                    <input type="text" id="cpfAluno" maxlength="11" placeholder="Digite apenas números" oninput="this.value=this.value.replace(/\D/g,'')">
+                </div>
+                <button class="btn-login" onclick="fazerLoginAluno()">Entrar como Aluno</button>
+            </div>
+
+            <div id="mensagemResultado"></div>
+
+            <a href="index.html" class="btn-voltar">← Voltar para o site</a>
+
+        </div>
+
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        var tipoSelecionado = '';
+
+        function selecionarOpcao(tipo) {
+            tipoSelecionado = tipo;
+
+            document.getElementById('opcaoAdmin').classList.remove('selecionado');
+            document.getElementById('opcaoAluno').classList.remove('selecionado');
+
+            document.getElementById('camposAdmin').classList.remove('ativo');
+            document.getElementById('camposAluno').classList.remove('ativo');
+            document.getElementById('mensagemResultado').innerHTML = '';
+
+            if (tipo === 'admin') {
+                document.getElementById('opcaoAdmin').classList.add('selecionado');
+                document.getElementById('camposAdmin').classList.add('ativo');
+                document.getElementById('emailAdmin').focus();
+            } else {
+                document.getElementById('opcaoAluno').classList.add('selecionado');
+                document.getElementById('camposAluno').classList.add('ativo');
+                document.getElementById('cpfAluno').focus();
+            }
+        }
+
+        document.getElementById('emailAdmin').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('senhaAdmin').focus();
+            }
+        });
+
+        document.getElementById('senhaAdmin').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                fazerLoginAdmin();
+            }
+        });
+
+        document.getElementById('cpfAluno').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                fazerLoginAluno();
+            }
+        });
+
+        function mostrarLoading(mostrar) {
+            document.getElementById('loadingOverlay').style.display = mostrar ? 'flex' : 'none';
+        }
+
+        // ============================
+        // LOGIN ADMINISTRADOR
+        // ============================
+
+        function fazerLoginAdmin() {
+            var email = document.getElementById('emailAdmin').value.trim();
+            var senha = document.getElementById('senhaAdmin').value.trim();
+            var erro = document.getElementById('mensagemResultado');
+
+            if (email === '') {
+                erro.innerHTML = '<p class="mensagem-erro">⚠️ Digite seu e-mail.</p>';
+                document.getElementById('emailAdmin').focus();
+                return;
+            }
+
+            if (senha === '') {
+                erro.innerHTML = '<p class="mensagem-erro">⚠️ Digite sua senha.</p>';
+                document.getElementById('senhaAdmin').focus();
+                return;
+            }
+
+            erro.innerHTML = '';
+            mostrarLoading(true);
+
+            loginUsuario(email, senha)
+                .then(function(userCredential) {
+                    console.log('✅ Admin logado com sucesso!', userCredential.user.email);
+                    mostrarLoading(false);
+                    erro.innerHTML = '<p class="mensagem-sucesso">✅ Login realizado! Redirecionando...</p>';
+                    setTimeout(function() {
+                        window.location.href = 'admin.html';
+                    }, 500);
+                })
+                .catch(function(error) {
+                    mostrarLoading(false);
+                    console.error('❌ Erro no login:', error);
+                    
+                    if (error.code === 'auth/user-not-found') {
+                        erro.innerHTML = '<p class="mensagem-erro">❌ Usuário não encontrado. Verifique seu e-mail.</p>';
+                    } else if (error.code === 'auth/wrong-password') {
+                        erro.innerHTML = '<p class="mensagem-erro">❌ Senha incorreta. Tente novamente.</p>';
+                    } else if (error.code === 'auth/invalid-email') {
+                        erro.innerHTML = '<p class="mensagem-erro">❌ E-mail inválido. Digite um e-mail válido.</p>';
+                    } else if (error.code === 'auth/user-disabled') {
+                        erro.innerHTML = '<p class="mensagem-erro">❌ Esta conta foi desativada. Entre em contato com o suporte.</p>';
+                    } else {
+                        erro.innerHTML = '<p class="mensagem-erro">❌ Erro ao logar: ' + error.message + '</p>';
+                    }
+                });
+        }
+
+        // ============================
+        // LOGIN ALUNO
+        // ============================
+
+        function fazerLoginAluno() {
+            var cpf = document.getElementById('cpfAluno').value.trim();
+            var erro = document.getElementById('mensagemResultado');
+
+            if (cpf === '') {
+                erro.innerHTML = '<p class="mensagem-erro">⚠️ Digite seu CPF.</p>';
+                document.getElementById('cpfAluno').focus();
+                return;
+            }
+
+            if (cpf.length !== 11 || !/^[0-9]+$/.test(cpf)) {
+                erro.innerHTML = '<p class="mensagem-erro">⚠️ CPF inválido. Digite exatamente 11 números.</p>';
+                document.getElementById('cpfAluno').focus();
+                return;
+            }
+
+            erro.innerHTML = '';
+            mostrarLoading(true);
+
+            buscarAlunoPorCpfFirebase(cpf)
+                .then(function(snapshot) {
+                    mostrarLoading(false);
+                    
+                    if (!snapshot.empty) {
+                        localStorage.setItem('alunoLogado', cpf);
+                        erro.innerHTML = '<p class="mensagem-sucesso">✅ Login como Aluno! Redirecionando...</p>';
+                        setTimeout(function() {
+                            window.location.href = 'aluno.html';
+                        }, 500);
+                    } else {
+                        erro.innerHTML = '<p class="mensagem-erro">❌ CPF não encontrado. Entre em contato com o administrador.</p>';
+                    }
+                })
+                .catch(function(error) {
+                    mostrarLoading(false);
+                    console.error('❌ Erro ao verificar CPF:', error);
+                    erro.innerHTML = '<p class="mensagem-erro">❌ Erro ao verificar CPF: ' + error.message + '</p>';
+                });
+        }
+
+        // Verificar se já está logado
+        verificarAutenticacao().then(function(user) {
+            if (user) {
+                console.log('Usuário já está logado:', user.email);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

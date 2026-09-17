@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aluno - Instituto Meta</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .aluno-page {
+            min-height: 100vh;
+            background: #f5f5f5;
+            padding: 30px;
+        }
+
+        .aluno-container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.1);
+        }
+
+        .aluno-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ff6600;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .aluno-header h1 {
+            color: #ff6600;
+            font-size: 28px;
+        }
+
+        .aluno-header .btn-sair {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: .3s;
+            text-decoration: none;
+        }
+
+        .aluno-header .btn-sair:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .dados-aluno {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            border-left: 4px solid #ff6600;
+        }
+
+        .dados-aluno .item {
+            font-size: 14px;
+            padding: 6px 0;
+        }
+
+        .dados-aluno .item strong {
+            color: #ff6600;
+        }
+
+        .aluno-subtitulo {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        .aluno-subtitulo .nome-aluno {
+            color: #ff6600;
+            font-weight: bold;
+        }
+
+        .info-aluno {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .info-aluno span {
+            font-weight: bold;
+            color: #ff6600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .loading .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6600;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .ferramentas-aluno {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .ferramentas-aluno button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: .3s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ferramentas-aluno .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .ferramentas-aluno .btn-whatsapp:hover {
+            background: #1da851;
+            transform: scale(1.02);
+        }
+
+        .ferramentas-aluno .btn-historico {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .ferramentas-aluno .btn-historico:hover {
+            background: #c0392b;
+            transform: scale(1.02);
+        }
+
+        .ferramentas-aluno .btn-atestado {
+            background: #ff6600;
+            color: white;
+        }
+
+        .ferramentas-aluno .btn-atestado:hover {
+            background: #e45700;
+            transform: scale(1.02);
+        }
+
+        .dashboard-progresso {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .dashboard-progresso h3 {
+            color: #ff6600;
+            margin-bottom: 15px;
+        }
+
+        .progresso-item {
+            margin-bottom: 12px;
+        }
+
+        .progresso-item .info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .progresso-item .info .nome-disc {
+            font-weight: bold;
+        }
+
+        .progresso-item .info .status {
+            font-weight: bold;
+        }
+
+        .progresso-item .info .status.concluido {
+            color: #27ae60;
+        }
+
+        .progresso-item .info .status.pendente {
+            color: #e74c3c;
+        }
+
+        .barra-progresso {
+            width: 100%;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .barra-progresso .barra {
+            height: 100%;
+            background: #ff6600;
+            border-radius: 5px;
+            transition: width 0.8s ease;
+        }
+
+        .barra-progresso .barra.concluido {
+            background: #27ae60;
+        }
+
+        .progresso-resumo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .progresso-resumo .item {
+            text-align: center;
+        }
+
+        .progresso-resumo .item .numero {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff6600;
+        }
+
+        .progresso-resumo .item .label {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .disciplinas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .disciplina-item-aluno {
+            background: #f9f9f9;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ff6600;
+            font-weight: bold;
+            color: #333;
+            transition: .3s;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .disciplina-item-aluno:hover {
+            background: #fff3ea;
+            transform: translateX(5px);
+        }
+
+        .disciplina-item-aluno .icone-disc {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .disciplina-item-aluno .status-disc {
+            font-size: 12px;
+            font-weight: normal;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .disciplina-item-aluno .status-disc.concluido {
+            color: #27ae60;
+        }
+
+        .disciplina-item-aluno .status-disc.pendente {
+            color: #e74c3c;
+        }
+
+        .total-disciplinas {
+            text-align: center;
+            color: #888;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .modal-conteudo-materia {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-conteudo-materia .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            max-width: 750px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-conteudo-materia .fechar-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .modal-conteudo-materia .fechar-modal:hover {
+            color: #ff6600;
+        }
+
+        .modal-conteudo-materia h2 {
+            color: #ff6600;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .modal-conteudo-materia .secao {
+            margin-bottom: 20px;
+        }
+
+        .modal-conteudo-materia .secao h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+            border-bottom: 2px solid #ff6600;
+            padding-bottom: 5px;
+        }
+
+        .modal-conteudo-materia .secao .item {
+            padding: 10px 14px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border-left: 3px solid #ff6600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .modal-conteudo-materia .secao .item a {
+            color: #3498db;
+            text-decoration: none;
+            word-break: break-all;
+            flex: 1;
+        }
+
+        .modal-conteudo-materia .secao .item a:hover {
+            text-decoration: underline;
+        }
+
+        .modal-conteudo-materia .secao .item .btn-verde {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: .3s;
+            font-weight: bold;
+            min-width: 100px;
+        }
+
+        .modal-conteudo-materia .secao .item .btn-verde:hover {
+            background: #7f8c8d;
+        }
+
+        .modal-conteudo-materia .secao .item .btn-verde.marcado {
+            background: #27ae60;
+        }
+
+        .modal-conteudo-materia .secao .item .btn-verde.marcado:hover {
+            background: #219a52;
+        }
+
+        .modal-conteudo-materia .sem-conteudo {
+            color: #999;
+            font-style: italic;
+        }
+
+        .modal-conteudo-materia .notas-materia {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .modal-conteudo-materia .notas-materia h3 {
+            color: #ff6600;
+            border-bottom: 2px solid #ff6600;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .modal-conteudo-materia .notas-materia .notas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .modal-conteudo-materia .notas-materia .nota-item {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .modal-conteudo-materia .notas-materia .nota-item .rotulo {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .modal-conteudo-materia .notas-materia .nota-item .valor {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .modal-conteudo-materia .notas-materia .nota-item .valor.aprovado {
+            color: #27ae60;
+        }
+
+        .modal-conteudo-materia .notas-materia .nota-item .valor.reprovado {
+            color: #e74c3c;
+        }
+
+        @media(max-width:600px) {
+            .aluno-container { padding: 20px; }
+            .aluno-header { flex-direction: column; text-align: center; }
+            .disciplinas-grid { grid-template-columns: 1fr 1fr; }
+            .dados-aluno { grid-template-columns: 1fr; }
+            .info-aluno { flex-direction: column; text-align: center; }
+            .modal-conteudo-materia .modal-content { padding: 20px; max-width: 95%; }
+            .modal-conteudo-materia .secao .item { flex-direction: column; align-items: stretch; }
+            .modal-conteudo-materia .secao .item .btn-verde { width: 100%; }
+            .progresso-resumo { grid-template-columns: 1fr 1fr; }
+            .ferramentas-aluno { flex-direction: column; }
+            .ferramentas-aluno button { justify-content: center; }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="aluno-page">
+
+        <div class="aluno-container">
+
+            <div class="aluno-header">
+                <h1>Área do Aluno</h1>
+                <button class="btn-sair" onclick="logoutEFirebase()">Sair</button>
+            </div>
+
+            <!-- LOADING -->
+            <div id="loadingIndicator" class="loading">
+                <div class="spinner"></div>
+                Carregando seus dados...
+            </div>
+
+            <!-- CONTEÚDO -->
+            <div id="alunoContent" style="display:none;">
+
+                <!-- Dados do Aluno -->
+                <div class="dados-aluno" id="dadosAluno">
+                    <div class="item"><strong>👤 Nome:</strong> <span id="alunoNome">-</span></div>
+                    <div class="item"><strong>📋 CPF:</strong> <span id="alunoCpf">-</span></div>
+                    <div class="item"><strong>👨 Nome do Pai:</strong> <span id="alunoNomePai">-</span></div>
+                    <div class="item"><strong>👩 Nome da Mãe:</strong> <span id="alunoNomeMae">-</span></div>
+                    <div class="item"><strong>🎂 Data de Nascimento:</strong> <span id="alunoDataNascimento">-</span></div>
+                    <div class="item"><strong>✉ E-mail:</strong> <span id="alunoEmail">-</span></div>
+                    <div class="item"><strong>📍 Endereço:</strong> <span id="alunoEndereco">-</span></div>
+                    <div class="item"><strong>📱 Telefone:</strong> <span id="alunoTelefone">-</span></div>
+                    <div class="item"><strong>📊 Status:</strong> <span id="alunoStatus">-</span></div>
+                    <div class="item"><strong>📚 Matérias:</strong> <span id="alunoMateriasCount">0</span></div>
+                </div>
+
+                <p class="aluno-subtitulo">Bem-vindo, <span class="nome-aluno" id="bemVindoNome">Aluno</span>! Acompanhe seu progresso nas disciplinas.</p>
+
+                <div class="info-aluno">
+                    <div><span>📚 Curso:</span> Ensino Médio EJA</div>
+                    <div><span>📅 Duração:</span> 18 meses</div>
+                    <div><span>📖 Modalidade:</span> Semi EAD</div>
+                </div>
+
+                <!-- Ferramentas do Aluno -->
+                <div class="ferramentas-aluno">
+                    <button class="btn-whatsapp" onclick="abrirWhatsApp()">
+                        💬 WhatsApp
+                    </button>
+                    <button class="btn-historico" onclick="gerarHistoricoPDF()">
+                        📄 Histórico (PDF)
+                    </button>
+                    <button class="btn-atestado" onclick="emitirAtestado()">
+                        📋 Atestado de Vínculo
+                    </button>
+                </div>
+
+                <div class="dashboard-progresso" id="dashboardProgresso">
+                    <h3>📊 Seu Progresso</h3>
+                    <div id="listaProgresso"></div>
+                    <div class="progresso-resumo" id="resumoProgresso">
+                        <div class="item">
+                            <div class="numero" id="totalDisciplinasProgresso">0</div>
+                            <div class="label">Total de Disciplinas</div>
+                        </div>
+                        <div class="item">
+                            <div class="numero" id="disciplinasConcluidas">0</div>
+                            <div class="label">Concluídas</div>
+                        </div>
+                        <div class="item">
+                            <div class="numero" id="percentualConclusao">0%</div>
+                            <div class="label">Conclusão</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color:#ff6600; margin-bottom:5px;">📚 Disciplinas do Curso</h3>
+                <p style="color:#888; font-size:14px; margin-bottom:15px;">Clique em uma disciplina para ver o conteúdo.</p>
+
+                <div class="disciplinas-grid" id="listaDisciplinas"></div>
+
+                <p class="total-disciplinas" id="totalDisciplinas"></p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="modalConteudo" class="modal-conteudo-materia" onclick="fecharModalConteudo(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="fechar-modal" onclick="fecharModalConteudo()">&times;</span>
+            <h2 id="modalTitulo">Matéria</h2>
+            <div id="modalCorpo"></div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        // ============================
+        // VARIÁVEIS GLOBAIS
+        // ============================
+
+        var alunoLogado = null;
+        var todasMateriasAluno = [];
+
+        // ============================
+        // FUNÇÃO AUXILIAR: CONVERTER IMAGEM PARA BASE64
+        // ============================
+
+        function carregarImagemComoBase64(caminho) {
+            return new Promise(function(resolve, reject) {
+                var img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = function() {
+                    var canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    var ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    try {
+                        var dataURL = canvas.toDataURL('image/png');
+                        resolve(dataURL);
+                    } catch (e) {
+                        reject(e);
+                    }
+                };
+                img.onerror = function() {
+                    reject(new Error('Erro ao carregar imagem: ' + caminho));
+                };
+                img.src = caminho;
+            });
+        }
+
+        // ============================
+        // FUNÇÃO AUXILIAR: ABRIR JANELA COM IMPRESSÃO APÓS IMAGENS CARREGAREM
+        // ============================
+
+        function abrirJanelaImpressao(html, imagens) {
+            // Carregar todas as imagens como base64
+            Promise.all(imagens.map(function(caminho) {
+                return carregarImagemComoBase64(caminho).catch(function() {
+                    return ''; // Se falhar, retorna vazio
+                });
+            }))
+            .then(function(imagensBase64) {
+                // Substituir os placeholders pelas imagens base64
+                var htmlFinal = html;
+                imagens.forEach(function(caminho, index) {
+                    var base64 = imagensBase64[index];
+                    if (base64) {
+                        htmlFinal = htmlFinal.split('src="' + caminho + '"').join('src="' + base64 + '"');
+                    }
+                });
+
+                // Abrir janela e escrever o HTML
+                var janela = window.open('', '_blank', 'width=900,height=800');
+                janela.document.write(htmlFinal);
+                janela.document.close();
+
+                // Aguardar renderização completa e disparar impressão
+                janela.onload = function() {
+                    setTimeout(function() {
+                        janela.focus();
+                        janela.print();
+                    }, 500);
+                };
+            })
+            .catch(function(error) {
+                console.error('Erro ao carregar imagens:', error);
+                // Fallback: abrir sem as imagens
+                var janela = window.open('', '_blank', 'width=900,height=800');
+                janela.document.write(html);
+                janela.document.close();
+                setTimeout(function() {
+                    janela.focus();
+                    janela.print();
+                }, 500);
+            });
+        }
+
+        // ============================
+        // VERIFICAR AUTENTICAÇÃO DO ALUNO
+        // ============================
+
+        verificarAutenticacao().then(function(user) {
+            var cpfLogado = localStorage.getItem('alunoLogado');
+            if (!cpfLogado) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            buscarAlunoPorCpfFirebase(cpfLogado)
+                .then(function(snapshot) {
+                    if (snapshot.empty) {
+                        alert('Aluno não encontrado. Faça login novamente.');
+                        localStorage.removeItem('alunoLogado');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    snapshot.forEach(function(doc) {
+                        alunoLogado = doc.data();
+                        alunoLogado.id = doc.id;
+                    });
+
+                    document.getElementById('loadingIndicator').style.display = 'none';
+                    document.getElementById('alunoContent').style.display = 'block';
+
+                    preencherDadosAluno();
+                    carregarDadosAluno();
+                })
+                .catch(function(error) {
+                    console.error('Erro ao buscar aluno:', error);
+                    alert('Erro ao carregar dados do aluno.');
+                });
+        });
+
+        // ============================
+        // PREENCHER DADOS DO ALUNO
+        // ============================
+
+        function preencherDadosAluno() {
+            document.getElementById('alunoNome').textContent = alunoLogado.nome || '-';
+            document.getElementById('alunoCpf').textContent = alunoLogado.cpf || '-';
+            document.getElementById('alunoNomePai').textContent = alunoLogado.nomePai || 'Não informado';
+            document.getElementById('alunoNomeMae').textContent = alunoLogado.nomeMae || 'Não informado';
+            
+            if (alunoLogado.dataNascimento) {
+                var dataNasc = new Date(alunoLogado.dataNascimento + 'T00:00:00');
+                document.getElementById('alunoDataNascimento').textContent = dataNasc.toLocaleDateString('pt-BR');
+            } else {
+                document.getElementById('alunoDataNascimento').textContent = 'Não informado';
+            }
+            
+            document.getElementById('alunoEmail').textContent = alunoLogado.email || 'Não informado';
+            document.getElementById('alunoEndereco').textContent = alunoLogado.endereco || '-';
+            document.getElementById('alunoTelefone').textContent = alunoLogado.telefone || '-';
+            document.getElementById('alunoStatus').textContent = alunoLogado.status === 'ativo' ? '✅ Ativo' : '❌ Inativo';
+            document.getElementById('alunoMateriasCount').textContent = alunoLogado.materias ? alunoLogado.materias.length : 0;
+
+            var nomeCompleto = alunoLogado.nome || 'Aluno';
+            var primeiroNome = nomeCompleto.split(' ')[0];
+            document.getElementById('bemVindoNome').textContent = primeiroNome;
+        }
+
+        // ============================
+        // LOGOUT
+        // ============================
+
+        function logoutEFirebase() {
+            logoutUsuario()
+                .then(function() {
+                    localStorage.removeItem('alunoLogado');
+                    window.location.href = 'login.html';
+                })
+                .catch(function(error) {
+                    console.error('❌ Erro ao sair:', error);
+                });
+        }
+
+        // ============================
+        // CARREGAR DADOS DO ALUNO
+        // ============================
+
+        function carregarDadosAluno() {
+            buscarMateriasFirebase()
+                .then(function(snapshot) {
+                    todasMateriasAluno = [];
+                    snapshot.forEach(function(doc) {
+                        var materia = doc.data();
+                        materia.id = doc.id;
+                        todasMateriasAluno.push(materia);
+                    });
+                    carregarProgresso();
+                    carregarDisciplinas();
+                })
+                .catch(function(error) {
+                    console.error('Erro ao carregar matérias:', error);
+                });
+        }
+
+        // ============================
+        // CARREGAR PROGRESSO
+        // ============================
+
+        function carregarProgresso() {
+            var lista = document.getElementById('listaProgresso');
+            var total = 0;
+            var concluidas = 0;
+
+            if (!alunoLogado.materias || alunoLogado.materias.length === 0) {
+                lista.innerHTML = '<p style="color:#999;">Nenhuma disciplina associada.</p>';
+                document.getElementById('totalDisciplinasProgresso').textContent = '0';
+                document.getElementById('disciplinasConcluidas').textContent = '0';
+                document.getElementById('percentualConclusao').textContent = '0%';
+                return;
+            }
+
+            var html = '';
+
+            alunoLogado.materias.forEach(function(materiaId) {
+                var materia = todasMateriasAluno.find(function(m) { return m.id === materiaId; });
+                var nomeMateria = materia ? materia.nome : 'Matéria não encontrada';
+                total++;
+
+                var notas = alunoLogado.notas && alunoLogado.notas[materiaId] ? alunoLogado.notas[materiaId] : { nota1: null, nota2: null, notaFinal: null };
+                var concluido = notas.notaFinal !== null && notas.notaFinal !== undefined;
+
+                if (concluido) concluidas++;
+
+                var statusText = concluido ? '✅ Concluída' : '⏳ Em andamento';
+                var statusClass = concluido ? 'concluido' : 'pendente';
+                var barraClass = concluido ? 'barra concluido' : 'barra';
+                var percentual = concluido ? 100 : 50;
+
+                html += `
+                    <div class="progresso-item">
+                        <div class="info">
+                            <span class="nome-disc">📘 ${nomeMateria}</span>
+                            <span class="status ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="barra-progresso">
+                            <div class="${barraClass}" style="width:${percentual}%;"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            lista.innerHTML = html;
+
+            document.getElementById('totalDisciplinasProgresso').textContent = total;
+            document.getElementById('disciplinasConcluidas').textContent = concluidas;
+            document.getElementById('percentualConclusao').textContent = total > 0 ? Math.round((concluidas / total) * 100) + '%' : '0%';
+        }
+
+        // ============================
+        // CARREGAR DISCIPLINAS
+        // ============================
+
+        function carregarDisciplinas() {
+            var lista = document.getElementById('listaDisciplinas');
+            var total = document.getElementById('totalDisciplinas');
+
+            if (!alunoLogado.materias || alunoLogado.materias.length === 0) {
+                lista.innerHTML = '<p style="text-align:center; color:#999; grid-column:1/-1;">Nenhuma disciplina associada.</p>';
+                total.textContent = '';
+                return;
+            }
+
+            var icones = {
+                'Artes': '🎨', 'Educação Física': '🏃', 'Filosofia': '🧠',
+                'Sociologia': '👥', 'Inglês': '🇬🇧', 'Física': '⚡',
+                'Química': '🧪', 'Biologia': '🧬', 'Geografia': '🌍',
+                'História': '📜', 'Matemática': '📐', 'Língua Portuguesa': '📖',
+                'Programação': '💻', 'Banco de Dados': '🗄️'
+            };
+
+            var html = '';
+            var disciplinasExibidas = 0;
+
+            alunoLogado.materias.forEach(function(materiaId) {
+                var materia = todasMateriasAluno.find(function(m) { return m.id === materiaId; });
+                if (!materia) return;
+
+                disciplinasExibidas++;
+                var icone = icones[materia.nome] || '📘';
+
+                var notas = alunoLogado.notas && alunoLogado.notas[materiaId] ? alunoLogado.notas[materiaId] : { nota1: null, nota2: null, notaFinal: null };
+                var concluido = notas.notaFinal !== null && notas.notaFinal !== undefined;
+                var statusText = concluido ? '✅ Concluída' : '⏳ Em andamento';
+                var statusClass = concluido ? 'concluido' : 'pendente';
+
+                html += `
+                    <div class="disciplina-item-aluno" onclick="abrirConteudo('${materiaId}')">
+                        <span class="icone-disc">${icone}</span>
+                        ${materia.nome}
+                        <span class="status-disc ${statusClass}">${statusText}</span>
+                    </div>
+                `;
+            });
+
+            lista.innerHTML = html;
+            total.textContent = 'Total de ' + disciplinasExibidas + ' disciplinas disponíveis';
+        }
+
+        // ============================
+        // ABRIR CONTEÚDO DA MATÉRIA
+        // ============================
+
+        function abrirConteudo(materiaId) {
+            var materia = todasMateriasAluno.find(function(m) { return m.id === materiaId; });
+
+            if (!materia) {
+                alert('Matéria não encontrada.');
+                return;
+            }
+
+            var linksAcessados = alunoLogado.linksAcessados || [];
+            var notas = alunoLogado.notas && alunoLogado.notas[materiaId] ? alunoLogado.notas[materiaId] : { nota1: null, nota2: null, notaFinal: null };
+
+            var modal = document.getElementById('modalConteudo');
+            var titulo = document.getElementById('modalTitulo');
+            var corpo = document.getElementById('modalCorpo');
+
+            titulo.textContent = '📘 ' + materia.nome;
+
+            var html = '';
+
+            // Apostilas
+            html += `<div class="secao"><h3>📄 Apostilas</h3>`;
+            if (materia.apostilas && materia.apostilas.length > 0) {
+                materia.apostilas.forEach(function(link, i) {
+                    var linkId = 'apostila_' + materiaId + '_' + i;
+                    var acessado = linksAcessados.includes(linkId);
+                    var btnClass = acessado ? 'btn-verde marcado' : 'btn-verde';
+                    var btnText = acessado ? '✅ Acessado' : 'Marcar como lido';
+                    html += `
+                        <div class="item">
+                            <a href="${link}" target="_blank">📄 Apostila ${i+1}</a>
+                            <button class="${btnClass}" onclick="toggleLinkAcessado('${linkId}', this)">${btnText}</button>
+                        </div>
+                    `;
+                });
+            } else {
+                html += `<p class="sem-conteudo">Nenhuma apostila disponível.</p>`;
+            }
+            html += `</div>`;
+
+            // Vídeos
+            html += `<div class="secao"><h3>📹 Vídeos</h3>`;
+            if (materia.videos && materia.videos.length > 0) {
+                materia.videos.forEach(function(link, i) {
+                    var linkId = 'video_' + materiaId + '_' + i;
+                    var acessado = linksAcessados.includes(linkId);
+                    var btnClass = acessado ? 'btn-verde marcado' : 'btn-verde';
+                    var btnText = acessado ? '✅ Acessado' : 'Marcar como lido';
+                    html += `
+                        <div class="item">
+                            <a href="${link}" target="_blank">📹 Vídeo ${i+1}</a>
+                            <button class="${btnClass}" onclick="toggleLinkAcessado('${linkId}', this)">${btnText}</button>
+                        </div>
+                    `;
+                });
+            } else {
+                html += `<p class="sem-conteudo">Nenhum vídeo disponível.</p>`;
+            }
+            html += `</div>`;
+
+            // Testes
+            html += `<div class="secao"><h3>📝 Testes</h3>`;
+            if (materia.testes && materia.testes.length > 0) {
+                materia.testes.forEach(function(link, i) {
+                    var linkId = 'teste_' + materiaId + '_' + i;
+                    var acessado = linksAcessados.includes(linkId);
+                    var btnClass = acessado ? 'btn-verde marcado' : 'btn-verde';
+                    var btnText = acessado ? '✅ Acessado' : 'Marcar como lido';
+                    html += `
+                        <div class="item">
+                            <a href="${link}" target="_blank">📝 Teste ${i+1}</a>
+                            <button class="${btnClass}" onclick="toggleLinkAcessado('${linkId}', this)">${btnText}</button>
+                        </div>
+                    `;
+                });
+            } else {
+                html += `<p class="sem-conteudo">Nenhum teste disponível.</p>`;
+            }
+            html += `</div>`;
+
+            // Notas da disciplina
+            var nota1 = notas.nota1 !== null && notas.nota1 !== undefined ? notas.nota1 : '-';
+            var nota2 = notas.nota2 !== null && notas.nota2 !== undefined ? notas.nota2 : '-';
+            var notaFinal = notas.notaFinal !== null && notas.notaFinal !== undefined ? notas.notaFinal : '-';
+            var notaFinalClass = '';
+            if (notas.notaFinal !== null && notas.notaFinal !== undefined) {
+                notaFinalClass = notas.notaFinal >= 6 ? 'aprovado' : 'reprovado';
+            }
+
+            html += `
+                <div class="notas-materia">
+                    <h3>📊 Minhas Notas</h3>
+                    <div class="notas-grid">
+                        <div class="nota-item">
+                            <div class="rotulo">Nota 1</div>
+                            <div class="valor">${nota1}</div>
+                        </div>
+                        <div class="nota-item">
+                            <div class="rotulo">Nota 2</div>
+                            <div class="valor">${nota2}</div>
+                        </div>
+                        <div class="nota-item">
+                            <div class="rotulo">Nota Final</div>
+                            <div class="valor ${notaFinalClass}">${notaFinal}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            corpo.innerHTML = html;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // ============================
+        // FUNÇÃO PARA MARCAR LINK COMO ACESSADO
+        // ============================
+
+        function toggleLinkAcessado(linkId, botao) {
+            if (!alunoLogado) return;
+
+            var linksAcessados = alunoLogado.linksAcessados || [];
+            var index = linksAcessados.indexOf(linkId);
+
+            if (index > -1) {
+                linksAcessados.splice(index, 1);
+                botao.className = 'btn-verde';
+                botao.textContent = 'Marcar como lido';
+            } else {
+                linksAcessados.push(linkId);
+                botao.className = 'btn-verde marcado';
+                botao.textContent = '✅ Acessado';
+            }
+
+            alunoLogado.linksAcessados = linksAcessados;
+
+            atualizarAlunoFirebase(alunoLogado.id, { linksAcessados: linksAcessados })
+                .catch(function(error) {
+                    console.error('Erro ao salvar acesso:', error);
+                });
+        }
+
+        // ============================
+        // FECHAR MODAL
+        // ============================
+
+        function fecharModalConteudo(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('modalConteudo').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                fecharModalConteudo();
+            }
+        });
+
+        // ============================
+        // WHATSAPP
+        // ============================
+
+        function abrirWhatsApp() {
+            var numero = '5591984400383';
+            var mensagem = 'Olá! Sou aluno do Instituto Meta e gostaria de falar com a equipe.';
+            var url = 'https://wa.me/' + numero + '?text=' + encodeURIComponent(mensagem);
+            window.open(url, '_blank');
+        }
+
+        // ============================
+        // GERAR HISTÓRICO EM PDF
+        // ============================
+
+        function gerarHistoricoPDF() {
+            if (!alunoLogado) {
+                alert('⚠️ Erro ao carregar dados do aluno.');
+                return;
+            }
+
+            var dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            var horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            buscarMateriasFirebase()
+                .then(function(snapshot) {
+                    var materiasFirebase = [];
+                    snapshot.forEach(function(doc) {
+                        var materia = doc.data();
+                        materia.id = doc.id;
+                        materiasFirebase.push(materia);
+                    });
+
+                    var dataNascFormatada = '-';
+                    if (alunoLogado.dataNascimento) {
+                        var dataNasc = new Date(alunoLogado.dataNascimento + 'T00:00:00');
+                        dataNascFormatada = dataNasc.toLocaleDateString('pt-BR');
+                    }
+
+                    var filiacao = '';
+                    if (alunoLogado.nomePai && alunoLogado.nomePai.trim() !== '') {
+                        filiacao += alunoLogado.nomePai;
+                    }
+                    if (alunoLogado.nomeMae && alunoLogado.nomeMae.trim() !== '') {
+                        if (filiacao !== '') filiacao += ' e ';
+                        filiacao += alunoLogado.nomeMae;
+                    }
+                    if (filiacao === '') filiacao = 'Não informado';
+
+                    var htmlHistorico = `
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta charset="UTF-8">
+                            <title>Histórico Escolar - Instituto Meta</title>
+                            <style>
+                                @page { size: A4; margin: 15mm; }
+                                * { margin: 0; padding: 0; box-sizing: border-box; }
+                                body { font-family: Arial, Helvetica, sans-serif; padding: 20px; background: white; font-size: 11px; color: #000; }
+                                .container { max-width: 100%; margin: 0 auto; }
+                                
+                                .topo-documento {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    padding-bottom: 15px;
+                                    margin-bottom: 15px;
+                                    border-bottom: 2px solid #1a3a8f;
+                                }
+                                .topo-documento .img-esquerda { max-height: 80px; max-width: 45%; }
+                                .topo-documento .img-direita { max-height: 80px; max-width: 45%; }
+                                
+                                .cabecalho { text-align: center; padding-bottom: 10px; margin-bottom: 15px; }
+                                .cabecalho .instituicao { font-size: 14px; font-weight: bold; color: #1a3a8f; margin-bottom: 3px; }
+                                .cabecalho .ato { font-size: 11px; color: #333; font-style: italic; margin-top: 5px; }
+                                .cabecalho .info-inst { font-size: 9px; color: #333; margin-top: 5px; }
+                                
+                                .titulo-doc { text-align: center; font-size: 16px; font-weight: bold; text-transform: uppercase; margin: 15px 0; letter-spacing: 2px; }
+                                
+                                .secao-titulo { background: #e0e0e0; border: 1px solid #000; padding: 3px 8px; font-weight: bold; font-size: 11px; text-transform: uppercase; }
+                                
+                                .tabela-identificacao { width: 100%; border-collapse: collapse; margin-bottom: 15px; border: 1px solid #000; }
+                                .tabela-identificacao td { padding: 5px 8px; border: 1px solid #000; font-size: 11px; }
+                                .tabela-identificacao td.campo { font-weight: bold; width: 18%; background: #f5f5f5; }
+                                
+                                .tabela-desempenho { width: 100%; border-collapse: collapse; margin-top: 5px; border: 1px solid #000; }
+                                .tabela-desempenho th { background: #333; color: white; padding: 6px 8px; border: 1px solid #000; font-size: 11px; text-align: center; }
+                                .tabela-desempenho td { padding: 5px 8px; border: 1px solid #000; font-size: 11px; text-align: center; }
+                                .tabela-desempenho td.disciplina { text-align: left; }
+                                .aprovado { color: #006600; font-weight: bold; }
+                                .reprovado { color: #cc0000; font-weight: bold; }
+                                .cursando { color: #0066cc; font-weight: bold; }
+                                
+                                .rodape { margin-top: 30px; text-align: center; font-size: 11px; }
+                                .rodape .data-local { margin-bottom: 40px; }
+                                .rodape .assinatura { margin-top: 40px; }
+                                .rodape .assinatura .linha { width: 300px; border-top: 1px solid #000; margin: 0 auto 5px; }
+                                .rodape .assinatura .nome { font-weight: bold; }
+                                
+                                .atencao { margin-top: 30px; border: 1px solid #000; padding: 8px 12px; font-size: 10px; }
+                                .atencao strong { display: block; margin-bottom: 5px; }
+                                
+                                @media print { body { padding: 0; } .atencao { page-break-inside: avoid; } }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="container">
+                                <div class="topo-documento">
+                                    <img src="img/metahistorico.png" alt="Meta" class="img-esquerda" onerror="this.style.display='none'">
+                                    <img src="img/assinatura.png" alt="Assinatura" class="img-direita" onerror="this.style.display='none'">
+                                </div>
+
+                                <div class="cabecalho">
+                                    <div class="instituicao">META - INSTITUTO DE MULTIENSINO TÉCNICO APLICADO</div>
+                                    <div class="ato">Ato Autorizativo: Em tramitação do CEE-PA</div>
+                                    <div class="info-inst">CNPJ: 32.527.601/0001-43</div>
+                                    <div class="info-inst">Rua Pau D'Arco, s/n - Gurupilândia - CEP: 68.618-000 - Nova Esperança do Piriá-PA</div>
+                                </div>
+                                
+                                <div class="titulo-doc">HISTÓRICO ESCOLAR</div>
+                                
+                                <div class="secao-titulo">IDENTIFICAÇÃO</div>
+                                <table class="tabela-identificacao">
+                                    <tr>
+                                        <td class="campo">ALUNO:</td>
+                                        <td colspan="3">${alunoLogado.nome || '-'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="campo">CPF:</td>
+                                        <td>${alunoLogado.cpf || '-'}</td>
+                                        <td class="campo">DATA NASC.:</td>
+                                        <td>${dataNascFormatada}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="campo">FILIAÇÃO:</td>
+                                        <td colspan="3">${filiacao}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="campo">CURSO:</td>
+                                        <td>Ensino Médio - EJA</td>
+                                        <td class="campo">STATUS:</td>
+                                        <td>${alunoLogado.status === 'ativo' ? 'Ativo' : 'Inativo'}</td>
+                                    </tr>
+                                </table>
+                                
+                                <div class="secao-titulo">DESEMPENHO</div>
+                                <table class="tabela-desempenho">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 45%;">Disciplina</th>
+                                            <th style="width: 10%;">Nota 1</th>
+                                            <th style="width: 10%;">Nota 2</th>
+                                            <th style="width: 15%;">Média Final</th>
+                                            <th style="width: 20%;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                    `;
+
+                    if (alunoLogado.materias && alunoLogado.materias.length > 0) {
+                        alunoLogado.materias.forEach(function(materiaId) {
+                            var materia = null;
+                            for (var i = 0; i < materiasFirebase.length; i++) {
+                                if (materiasFirebase[i].id === materiaId) {
+                                    materia = materiasFirebase[i];
+                                    break;
+                                }
+                            }
+                            
+                            var nomeMateria = materia ? materia.nome : 'Matéria não encontrada';
+
+                            var notas = alunoLogado.notas && alunoLogado.notas[materiaId] ? alunoLogado.notas[materiaId] : { nota1: null, nota2: null, notaFinal: null };
+                            var nota1 = notas.nota1 !== null && notas.nota1 !== undefined ? notas.nota1 : '-';
+                            var nota2 = notas.nota2 !== null && notas.nota2 !== undefined ? notas.nota2 : '-';
+                            var notaFinal = notas.notaFinal !== null && notas.notaFinal !== undefined ? notas.notaFinal : '-';
+                            
+                            var status = 'Cursando';
+                            var statusClass = 'cursando';
+                            if (notas.notaFinal !== null && notas.notaFinal !== undefined) {
+                                if (notas.notaFinal >= 6) {
+                                    status = 'Aprovado';
+                                    statusClass = 'aprovado';
+                                } else {
+                                    status = 'Reprovado';
+                                    statusClass = 'reprovado';
+                                }
+                            }
+
+                            htmlHistorico += `
+                                <tr>
+                                    <td class="disciplina">${nomeMateria}</td>
+                                    <td>${nota1}</td>
+                                    <td>${nota2}</td>
+                                    <td>${notaFinal}</td>
+                                    <td class="${statusClass}">${status}</td>
+                                </tr>
+                            `;
+                        });
+                    } else {
+                        htmlHistorico += `
+                            <tr>
+                                <td colspan="5" style="text-align:center; color:#999;">Nenhuma disciplina associada.</td>
+                            </tr>
+                        `;
+                    }
+
+                    htmlHistorico += `
+                                    </tbody>
+                                </table>
+                                
+                                <div class="rodape">
+                                    <div class="data-local">
+                                        Nova Esperança do Piriá-PA, ${dataAtual} às ${horaAtual}.
+                                    </div>
+                                    
+                                    <div class="assinatura">
+                                        <div class="linha"></div>
+                                        <div class="nome">Instituto Meta</div>
+                                        <div>Responsável pela expedição do documento</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="atencao">
+                                    <strong>⚠ ATENÇÃO</strong>
+                                    Este documento é emitido eletronicamente e passa a ser válido somente com a assinatura do responsável pela expedição de documento do Instituto Meta.
+                                </div>
+                            </div>
+                        </body>
+                        </html>
+                    `;
+
+                    // Abrir janela com as imagens carregadas como base64
+                    abrirJanelaImpressao(htmlHistorico, ['img/metahistorico.png', 'img/assinatura.png']);
+                })
+                .catch(function(error) {
+                    console.error('Erro ao buscar matérias:', error);
+                    alert('❌ Erro ao gerar histórico: ' + error.message);
+                });
+        }
+
+        // ============================
+        // EMITIR ATESTADO DE VÍNCULO
+        // ============================
+
+        function emitirAtestado() {
+            if (!alunoLogado) {
+                alert('⚠️ Erro ao carregar dados do aluno.');
+                return;
+            }
+
+            var dataEmissao = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            var horaEmissao = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            var nomeMaiusculo = (alunoLogado.nome || '').toUpperCase();
+
+            var htmlAtestado = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Atestado de Vínculo - Instituto Meta</title>
+                    <style>
+                        @page { size: A4; margin: 15mm; }
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body { font-family: Arial, Helvetica, sans-serif; padding: 20px; background: white; font-size: 12px; color: #000; }
+                        .container { max-width: 100%; margin: 0 auto; }
+                        
+                        .topo-documento {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding-bottom: 15px;
+                            margin-bottom: 15px;
+                            border-bottom: 2px solid #1a3a8f;
+                        }
+                        .topo-documento .img-esquerda { max-height: 80px; max-width: 45%; }
+                        .topo-documento .img-direita { max-height: 80px; max-width: 45%; }
+                        
+                        .cabecalho { text-align: center; padding-bottom: 10px; margin-bottom: 20px; }
+                        .cabecalho .instituicao { font-size: 14px; font-weight: bold; color: #1a3a8f; margin-bottom: 3px; }
+                        .cabecalho .ato { font-size: 11px; color: #333; font-style: italic; margin-top: 5px; }
+                        .cabecalho .info-inst { font-size: 10px; color: #333; margin-top: 5px; }
+                        .cabecalho .contato { font-size: 10px; color: #333; margin-top: 3px; }
+                        
+                        .titulo-doc { 
+                            text-align: center; 
+                            font-size: 16px; 
+                            font-weight: bold; 
+                            text-transform: uppercase; 
+                            margin: 25px 0; 
+                            letter-spacing: 2px; 
+                        }
+                        
+                        .sub-cabecalho {
+                            text-align: center;
+                            font-size: 12px;
+                            font-weight: bold;
+                            margin-bottom: 15px;
+                            line-height: 1.5;
+                        }
+                        .sub-cabecalho .nome-inst { font-size: 13px; }
+                        .sub-cabecalho .info { font-size: 11px; font-weight: normal; }
+                        
+                        .corpo { 
+                            line-height: 2; 
+                            font-size: 13px; 
+                            text-align: justify; 
+                            margin: 25px 0;
+                        }
+                        .corpo strong { color: #000; }
+                        .corpo .nome-aluno { text-transform: uppercase; font-weight: bold; }
+                        
+                        .rodape { 
+                            margin-top: 50px; 
+                            text-align: center; 
+                            font-size: 12px; 
+                        }
+                        .rodape .data-local { 
+                            margin-bottom: 50px; 
+                            text-align: center;
+                        }
+                        .rodape .assinatura { 
+                            margin-top: 50px; 
+                        }
+                        .rodape .assinatura .linha { 
+                            width: 350px; 
+                            border-top: 1px solid #000; 
+                            margin: 0 auto 5px; 
+                        }
+                        .rodape .assinatura .nome { font-weight: bold; }
+                        
+                        .atencao { 
+                            margin-top: 40px; 
+                            border: 1px solid #000; 
+                            padding: 10px 15px; 
+                            font-size: 11px; 
+                            text-align: justify;
+                        }
+                        .atencao strong { 
+                            display: block; 
+                            margin-bottom: 5px; 
+                            text-align: center;
+                        }
+                        
+                        @media print { body { padding: 0; } .atencao { page-break-inside: avoid; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="topo-documento">
+                            <img src="img/metahistorico.png" alt="Meta" class="img-esquerda" onerror="this.style.display='none'">
+                            <img src="img/assinatura.png" alt="Assinatura" class="img-direita" onerror="this.style.display='none'">
+                        </div>
+
+                        <div class="cabecalho">
+                            <div class="instituicao">META - INSTITUTO DE MULTIENSINO TÉCNICO E APLICADO</div>
+                            <div class="ato">Ato Autorizativo: Em tramitação no CEE-PA</div>
+                            <div class="info-inst">CNPJ: 32.527.601/0001-43</div>
+                            <div class="info-inst">Rua Pau D'Arco, 01 – Gurupilândia – CEP: 68.618-000 – Nova Esperança do Piriá – PA - Brasil</div>
+                            <div class="contato">(91) 98440-0383 – E-mail: escolameta.meta@gmail.com</div>
+                        </div>
+                        
+                        <div class="titulo-doc">ATESTADO DE VÍNCULO</div>
+                        
+                        <div class="corpo">
+                            <p>Atestamos, para os fins a que se fizerem necessários, que <span class="nome-aluno">${nomeMaiusculo}</span>, CPF: <strong>${alunoLogado.cpf || '-'}</strong>, é aluno(a) <strong>REGULAR</strong> vinculado(a) a esta instituição, cursando o <strong>Ensino Médio-EJA</strong>.</p>
+                            
+                            <br>
+                            
+                            <p>Este atestado é válido para comprovação de vínculo com a instituição de ensino.</p>
+                        </div>
+                        
+                        <div class="rodape">
+                            <div class="data-local">
+                                Nova Esperança do Piriá-PA, ${dataEmissao} às ${horaEmissao}
+                            </div>
+                            
+                            <div class="assinatura">
+                                <div class="linha"></div>
+                                <div class="nome">Instituto Meta</div>
+                                <div>Responsável pela expedição do documento.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="atencao">
+                            <strong>⚠ ATENÇÃO</strong>
+                            Este documento é emitido eletronicamente e passa a ser válido somente com a assinatura do responsável pela expedição de documento do Instituto Meta.
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            // Abrir janela com as imagens carregadas como base64
+            abrirJanelaImpressao(htmlAtestado, ['img/metahistorico.png', 'img/assinatura.png']);
+        }
+    </script>
+
+</body>
+
+</html>

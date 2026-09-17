@@ -1,0 +1,2811 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administrador - Instituto Meta</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ============================
+           ESTILOS DO ADMIN
+        ============================ */
+        .admin-page {
+            min-height: 100vh;
+            background: #f5f5f5;
+            padding: 30px;
+        }
+
+        .admin-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.1);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ff6600;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .admin-header h1 {
+            color: #ff6600;
+            font-size: 28px;
+        }
+
+        .admin-header .btn-sair {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: .3s;
+            text-decoration: none;
+        }
+
+        .admin-header .btn-sair:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .btn-pdf {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: .3s;
+            font-size: 14px;
+        }
+
+        .btn-pdf:hover {
+            background: #c0392b;
+            transform: scale(1.02);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .loading .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6600;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid #ff6600;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .dashboard-card .numero {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff6600;
+        }
+
+        .dashboard-card .label {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .dashboard-card .sub-info {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .dashboard-card .sub-info .verde {
+            color: #27ae60;
+        }
+
+        .dashboard-card .sub-info .vermelho {
+            color: #e74c3c;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .admin-tabs button {
+            padding: 12px 25px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+            cursor: pointer;
+            font-weight: bold;
+            transition: .3s;
+            font-size: 15px;
+        }
+
+        .admin-tabs button:hover {
+            border-color: #ff6600;
+            background: #fff3ea;
+        }
+
+        .admin-tabs button.ativo {
+            background: #ff6600;
+            color: white;
+            border-color: #ff6600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.ativo {
+            display: block;
+        }
+
+        .form-admin {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-admin h3 {
+            color: #ff6600;
+            margin-bottom: 15px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-grid .campo-full {
+            grid-column: 1 / -1;
+        }
+
+        .form-admin label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .form-admin input,
+        .form-admin select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: .3s;
+            outline: none;
+        }
+
+        .form-admin input:focus,
+        .form-admin select:focus {
+            border-color: #ff6600;
+            box-shadow: 0 0 8px rgba(255,102,0,0.15);
+        }
+
+        .form-admin select[multiple] {
+            min-height: 120px;
+        }
+
+        .form-admin select[multiple] option:checked {
+            background: #ff6600 !important;
+            color: white !important;
+        }
+
+        /* Estilos para campos com botão "Não informar" */
+        .campo-com-botao {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .campo-com-botao input {
+            flex: 1;
+        }
+
+        .btn-nao-informar {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: .3s;
+        }
+
+        .btn-nao-informar:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-nao-informar.ativo {
+            background: #e74c3c;
+        }
+
+        .btn-nao-informar.ativo:hover {
+            background: #c0392b;
+        }
+
+        .btn-salvar {
+            background: #27ae60;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: .3s;
+            margin-top: 10px;
+        }
+
+        .btn-salvar:hover {
+            background: #219a52;
+            transform: scale(1.02);
+        }
+
+        .btn-cancelar {
+            background: #95a5a6;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: .3s;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .btn-cancelar:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-excluir {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: .3s;
+        }
+
+        .btn-excluir:hover {
+            background: #c0392b;
+        }
+
+        .btn-editar {
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: .3s;
+            margin-right: 5px;
+        }
+
+        .btn-editar:hover {
+            background: #2980b9;
+        }
+
+        .btn-ordenar {
+            background: #ff6600;
+            color: white;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: .3s;
+            margin-bottom: 15px;
+        }
+
+        .btn-ordenar:hover {
+            background: #e45700;
+        }
+
+        .busca-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .busca-container input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: .3s;
+            min-width: 200px;
+        }
+
+        .busca-container input:focus {
+            border-color: #ff6600;
+            box-shadow: 0 0 8px rgba(255,102,0,0.15);
+        }
+
+        .busca-container .btn-busca {
+            background: #ff6600;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+        .busca-container .btn-busca:hover {
+            background: #e45700;
+        }
+
+        .busca-container .btn-limpar {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+        .busca-container .btn-limpar:hover {
+            background: #7f8c8d;
+        }
+
+        .tabela-dados {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .tabela-dados th {
+            background: #ff6600;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .tabela-dados td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+        }
+
+        .tabela-dados tr:hover {
+            background: #fff3ea;
+        }
+
+        .tabela-dados .linha-oculta {
+            display: none;
+        }
+
+        .sem-dados {
+            text-align: center;
+            color: #999;
+            padding: 30px;
+        }
+
+        .mensagem-admin {
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .mensagem-admin.sucesso {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .mensagem-admin.erro {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .materias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .materia-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #ff6600;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            transition: .3s;
+        }
+
+        .materia-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,.12);
+        }
+
+        .materia-card .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .materia-card .nome {
+            font-weight: bold;
+            font-size: 17px;
+            color: #333;
+        }
+
+        .materia-card .stats {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .materia-card .acoes {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .materia-card .acoes .btn-materia {
+            background: #ff6600;
+            color: white;
+            padding: 6px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: .3s;
+        }
+
+        .materia-card .acoes .btn-materia:hover {
+            background: #e45700;
+        }
+
+        .materia-card .acoes .btn-materia.verde {
+            background: #27ae60;
+        }
+
+        .materia-card .acoes .btn-materia.verde:hover {
+            background: #219a52;
+        }
+
+        .materia-card .acoes .btn-materia.vermelho {
+            background: #e74c3c;
+        }
+
+        .materia-card .acoes .btn-materia.vermelho:hover {
+            background: #c0392b;
+        }
+
+        .materia-card .acoes .btn-materia.azul {
+            background: #3498db;
+        }
+
+        .materia-card .acoes .btn-materia.azul:hover {
+            background: #2980b9;
+        }
+
+        .sub-materia {
+            margin-top: 10px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .sub-materia .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            border-left: 3px solid #ff6600;
+        }
+
+        .sub-materia .item .link {
+            color: #3498db;
+            text-decoration: none;
+            word-break: break-all;
+            font-size: 13px;
+        }
+
+        .sub-materia .item .link:hover {
+            text-decoration: underline;
+        }
+
+        .sub-materia .item .btn-remover {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .sub-materia .item .btn-remover:hover {
+            background: #c0392b;
+        }
+
+        .sub-materia input {
+            padding: 6px 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            flex: 1;
+            min-width: 150px;
+            outline: none;
+        }
+
+        .sub-materia input:focus {
+            border-color: #ff6600;
+        }
+
+        .sub-materia .flex-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        /* MODAL EDITAR ALUNO */
+        .modal-editar {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-editar .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            max-width: 750px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-editar .fechar-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .modal-editar .fechar-modal:hover {
+            color: #ff6600;
+        }
+
+        .modal-editar h2 {
+            color: #ff6600;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .modal-editar .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .modal-editar .form-grid .campo-full {
+            grid-column: 1 / -1;
+        }
+
+        .modal-editar label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .modal-editar input,
+        .modal-editar select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: .3s;
+            outline: none;
+        }
+
+        .modal-editar input:focus,
+        .modal-editar select:focus {
+            border-color: #ff6600;
+            box-shadow: 0 0 8px rgba(255,102,0,0.15);
+        }
+
+        .modal-editar select[multiple] {
+            min-height: 120px;
+        }
+
+        .modal-editar select[multiple] option:checked {
+            background: #ff6600 !important;
+            color: white !important;
+        }
+
+        .modal-editar .btn-salvar-edicao {
+            background: #27ae60;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: .3s;
+            margin-top: 10px;
+        }
+
+        .modal-editar .btn-salvar-edicao:hover {
+            background: #219a52;
+            transform: scale(1.02);
+        }
+
+        .modal-editar .btn-cancelar-edicao {
+            background: #95a5a6;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: .3s;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .modal-editar .btn-cancelar-edicao:hover {
+            background: #7f8c8d;
+        }
+
+        /* MODAL NOTAS */
+        .modal-notas {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-notas .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            animation: slideDown 0.3s ease;
+        }
+
+        .modal-notas .fechar-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .modal-notas .fechar-modal:hover {
+            color: #ff6600;
+        }
+
+        .modal-notas h2 {
+            color: #ff6600;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .modal-notas .info-aluno {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .modal-notas .info-aluno .item {
+            font-size: 14px;
+        }
+
+        .modal-notas .info-aluno .item strong {
+            color: #ff6600;
+        }
+
+        .modal-notas .disciplina-item {
+            background: #f9f9f9;
+            padding: 12px 18px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 4px solid #ff6600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .modal-notas .disciplina-item .nome-disc {
+            font-weight: bold;
+        }
+
+        .modal-notas .disciplina-item .nota-disc {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .modal-notas .disciplina-item .nota-disc .aprovado {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .modal-notas .disciplina-item .nota-disc .reprovado {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .modal-notas .disciplina-item .btn-nota {
+            background: #ff6600;
+            color: white;
+            padding: 4px 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: .3s;
+        }
+
+        .modal-notas .disciplina-item .btn-nota:hover {
+            background: #e45700;
+        }
+
+        /* MODAL ADICIONAR NOTA */
+        .modal-add-nota {
+            display: none;
+            position: fixed;
+            z-index: 10001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-add-nota .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            animation: slideDown 0.3s ease;
+        }
+
+        .modal-add-nota .fechar-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .modal-add-nota .fechar-modal:hover {
+            color: #ff6600;
+        }
+
+        .modal-add-nota h3 {
+            color: #ff6600;
+            margin-bottom: 20px;
+        }
+
+        .modal-add-nota .campo-nota {
+            margin-bottom: 15px;
+        }
+
+        .modal-add-nota .campo-nota label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .modal-add-nota .campo-nota input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .modal-add-nota .campo-nota input:focus {
+            border-color: #ff6600;
+        }
+
+        .modal-add-nota .btn-salvar-nota {
+            background: #27ae60;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: .3s;
+            width: 100%;
+        }
+
+        .modal-add-nota .btn-salvar-nota:hover {
+            background: #219a52;
+        }
+
+        .modal-add-nota .mensagem-nota {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #e74c3c;
+            text-align: center;
+        }
+
+        .ferramentas-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .ferramentas-header .left {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .sugestao-item {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff6600;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            transition: .3s;
+        }
+
+        .sugestao-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,.12);
+        }
+
+        .sugestao-item .header-sugestao {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .sugestao-item .header-sugestao .nome {
+            font-weight: bold;
+            color: #ff6600;
+        }
+
+        .sugestao-item .header-sugestao .data {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .sugestao-item .texto-sugestao {
+            margin-top: 8px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .sugestao-item .acoes-sugestao {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .sugestao-item .acoes-sugestao button {
+            padding: 5px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: .3s;
+        }
+
+        .sugestao-item .acoes-sugestao .btn-editar-sugestao {
+            background: #3498db;
+            color: white;
+        }
+
+        .sugestao-item .acoes-sugestao .btn-editar-sugestao:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .sugestao-item .acoes-sugestao .btn-excluir-sugestao {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .sugestao-item .acoes-sugestao .btn-excluir-sugestao:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        @media(max-width:700px) {
+            .admin-container { padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .admin-header { flex-direction: column; text-align: center; }
+            .tabela-dados { display: block; overflow-x: auto; }
+            .dashboard-cards { grid-template-columns: 1fr 1fr; }
+            .materias-grid { grid-template-columns: 1fr; }
+            .modal-editar .form-grid { grid-template-columns: 1fr; }
+            .modal-notas .info-aluno { grid-template-columns: 1fr; }
+            .ferramentas-header { flex-direction: column; align-items: stretch; }
+            .busca-container { flex-direction: column; }
+            .busca-container input { width: 100%; }
+            .sugestao-item .header-sugestao { flex-direction: column; align-items: flex-start; }
+            .campo-com-botao { flex-direction: column; align-items: stretch; }
+            .campo-com-botao .btn-nao-informar { width: 100%; }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="admin-page">
+
+        <div class="admin-container">
+
+            <div class="admin-header">
+                <h1>Painel do Administrador</h1>
+                <button class="btn-sair" onclick="logoutEFirebase()">Sair</button>
+            </div>
+
+            <!-- LOADING -->
+            <div id="loadingIndicator" class="loading">
+                <div class="spinner"></div>
+                Carregando dados do Firebase...
+            </div>
+
+            <!-- CONTEÚDO -->
+            <div id="adminContent" style="display:none;">
+
+                <!-- DASHBOARD CARDS SIMPLES -->
+                <div class="dashboard-cards" id="dashboardCards">
+                    <div class="dashboard-card">
+                        <div class="numero" id="totalAlunos">0</div>
+                        <div class="label">Total de Alunos</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="numero" id="alunosAtivos">0</div>
+                        <div class="label">Alunos Ativos</div>
+                        <div class="sub-info"><span class="verde" id="percentAtivos">0%</span> do total</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="numero" id="alunosInativos">0</div>
+                        <div class="label">Alunos Inativos</div>
+                        <div class="sub-info"><span class="vermelho" id="percentInativos">0%</span> do total</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="numero" id="totalMaterias">0</div>
+                        <div class="label">Total de Matérias</div>
+                    </div>
+                </div>
+
+                <!-- Abas -->
+                <div class="admin-tabs">
+                    <button class="ativo" onclick="trocarAba('alunos')">📋 Alunos</button>
+                    <button onclick="trocarAba('materias')">📚 Matérias</button>
+                    <button onclick="trocarAba('sugestoes')">💡 Sugestões</button>
+                </div>
+
+                <!-- ABA ALUNOS -->
+                <div id="tabAlunos" class="tab-content ativo">
+
+                    <div class="form-admin">
+                        <h3>➕ Adicionar Novo Aluno</h3>
+                        <div class="form-grid">
+                            <div>
+                                <label for="nomeAluno">Nome Completo</label>
+                                <input type="text" id="nomeAluno" placeholder="Digite o nome do aluno">
+                            </div>
+                            <div>
+                                <label for="cpfAluno">CPF (11 dígitos)</label>
+                                <input type="text" id="cpfAluno" maxlength="11" placeholder="Digite apenas números" oninput="this.value=this.value.replace(/\D/g,'')">
+                            </div>
+                            <div>
+                                <label for="nomePaiAluno">Nome do Pai</label>
+                                <div class="campo-com-botao">
+                                    <input type="text" id="nomePaiAluno" placeholder="Digite o nome do pai">
+                                    <button type="button" class="btn-nao-informar" id="btnNaoInformarPai" onclick="toggleNaoInformar('nomePaiAluno', 'btnNaoInformarPai')">Não informar</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="nomeMaeAluno">Nome da Mãe</label>
+                                <div class="campo-com-botao">
+                                    <input type="text" id="nomeMaeAluno" placeholder="Digite o nome da mãe">
+                                    <button type="button" class="btn-nao-informar" id="btnNaoInformarMae" onclick="toggleNaoInformar('nomeMaeAluno', 'btnNaoInformarMae')">Não informar</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="dataNascimentoAluno">Data de Nascimento</label>
+                                <div class="campo-com-botao">
+                                    <input type="date" id="dataNascimentoAluno">
+                                    <button type="button" class="btn-nao-informar" id="btnNaoInformarData" onclick="toggleNaoInformar('dataNascimentoAluno', 'btnNaoInformarData')">Não informar</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="emailAluno">E-mail</label>
+                                <div class="campo-com-botao">
+                                    <input type="email" id="emailAluno" placeholder="Digite o e-mail">
+                                    <button type="button" class="btn-nao-informar" id="btnNaoInformarEmail" onclick="toggleNaoInformar('emailAluno', 'btnNaoInformarEmail')">Não informar</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="enderecoAluno">Endereço</label>
+                                <input type="text" id="enderecoAluno" placeholder="Digite o endereço">
+                            </div>
+                            <div>
+                                <label for="telefoneAluno">Telefone</label>
+                                <input type="text" id="telefoneAluno" placeholder="Digite o telefone">
+                            </div>
+                            <div>
+                                <label for="statusAluno">Status</label>
+                                <select id="statusAluno" style="width:100%; padding:10px 12px; border:2px solid #ddd; border-radius:6px; font-size:14px;">
+                                    <option value="ativo">Ativo</option>
+                                    <option value="inativo">Inativo</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="materiasAluno">Selecionar Matérias</label>
+                                <select id="materiasAluno" multiple style="width:100%; padding:10px 12px; border:2px solid #ddd; border-radius:6px; font-size:14px; min-height:120px;">
+                                </select>
+                                <div style="display:flex; gap:8px; margin-top:5px; flex-wrap:wrap;">
+                                    <button type="button" onclick="selecionarTodasMaterias(true)" style="background:#ff6600; color:white; border:none; padding:4px 15px; border-radius:4px; cursor:pointer; font-size:13px;">Selecionar Todas</button>
+                                    <button type="button" onclick="selecionarTodasMaterias(false)" style="background:#95a5a6; color:white; border:none; padding:4px 15px; border-radius:4px; cursor:pointer; font-size:13px;">Limpar Todas</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn-salvar" onclick="adicionarAlunoFirebase()">Salvar Aluno</button>
+                            <button class="btn-cancelar" onclick="limparFormularioAluno()">Limpar</button>
+                        </div>
+                        <div id="mensagemAluno" class="mensagem-admin"></div>
+                    </div>
+
+                    <div class="ferramentas-header">
+                        <div class="left">
+                            <h3 style="color:#ff6600; margin:0;">📋 Alunos Cadastrados</h3>
+                            <button class="btn-ordenar" onclick="ordenarAlunos()">🔤 Ordenar A-Z</button>
+                        </div>
+                        <button class="btn-pdf" onclick="exportarPDF()">
+                            📄 Baixar PDF
+                        </button>
+                    </div>
+
+                    <!-- Busca de Alunos -->
+                    <div class="busca-container">
+                        <input type="text" id="buscaAluno" placeholder="🔍 Buscar aluno por nome ou CPF..." onkeyup="buscarAluno()">
+                        <button class="btn-busca" onclick="buscarAluno()">🔍 Buscar</button>
+                        <button class="btn-limpar" onclick="limparBusca()">✕ Limpar</button>
+                    </div>
+
+                    <div id="listaAlunos"></div>
+                </div>
+
+                <!-- ABA MATÉRIAS -->
+                <div id="tabMaterias" class="tab-content">
+
+                    <div class="form-admin">
+                        <h3>➕ Adicionar Nova Matéria</h3>
+                        <div class="form-grid">
+                            <div class="campo-full">
+                                <label for="nomeMateria">Nome da Matéria</label>
+                                <input type="text" id="nomeMateria" placeholder="Digite o nome da matéria">
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn-salvar" onclick="adicionarMateriaFirebase()">Adicionar Matéria</button>
+                        </div>
+                        <div id="mensagemMateria" class="mensagem-admin"></div>
+                    </div>
+
+                    <h3 style="color:#ff6600; margin-bottom:10px;">📚 Matérias Cadastradas</h3>
+                    <div id="listaMaterias"></div>
+                </div>
+
+                <!-- ABA SUGESTÕES -->
+                <div id="tabSugestoes" class="tab-content">
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
+                        <div>
+                            <h3 style="color:#ff6600; margin:0;">💡 Sugestões dos Visitantes</h3>
+                            <p style="color:#888; font-size:14px; margin-top:5px;">Visualize, edite e exclua as sugestões enviadas pelos visitantes.</p>
+                        </div>
+                        <button onclick="carregarSugestoesAdmin()" style="background:#ff6600; color:white; border:none; padding:8px 20px; border-radius:6px; cursor:pointer; font-weight:bold; transition:.3s;">
+                            🔄 Atualizar
+                        </button>
+                    </div>
+
+                    <div id="listaSugestoesAdmin">
+                        <p style="text-align:center; color:#888; padding:20px;">Carregando sugestões...</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL EDITAR ALUNO -->
+    <div id="modalEditar" class="modal-editar">
+        <div class="modal-content">
+            <span class="fechar-modal" onclick="fecharModalEditar()">&times;</span>
+            <h2>✏️ Editar Aluno</h2>
+            <div class="form-grid">
+                <div>
+                    <label for="editNome">Nome Completo</label>
+                    <input type="text" id="editNome" placeholder="Digite o nome">
+                </div>
+                <div>
+                    <label for="editCpf">CPF (11 dígitos)</label>
+                    <input type="text" id="editCpf" maxlength="11" placeholder="Digite apenas números" oninput="this.value=this.value.replace(/\D/g,'')">
+                </div>
+                <div>
+                    <label for="editNomePai">Nome do Pai</label>
+                    <div class="campo-com-botao">
+                        <input type="text" id="editNomePai" placeholder="Digite o nome do pai">
+                        <button type="button" class="btn-nao-informar" id="btnEditNaoInformarPai" onclick="toggleNaoInformar('editNomePai', 'btnEditNaoInformarPai')">Não informar</button>
+                    </div>
+                </div>
+                <div>
+                    <label for="editNomeMae">Nome da Mãe</label>
+                    <div class="campo-com-botao">
+                        <input type="text" id="editNomeMae" placeholder="Digite o nome da mãe">
+                        <button type="button" class="btn-nao-informar" id="btnEditNaoInformarMae" onclick="toggleNaoInformar('editNomeMae', 'btnEditNaoInformarMae')">Não informar</button>
+                    </div>
+                </div>
+                <div>
+                    <label for="editDataNascimento">Data de Nascimento</label>
+                    <div class="campo-com-botao">
+                        <input type="date" id="editDataNascimento">
+                        <button type="button" class="btn-nao-informar" id="btnEditNaoInformarData" onclick="toggleNaoInformar('editDataNascimento', 'btnEditNaoInformarData')">Não informar</button>
+                    </div>
+                </div>
+                <div>
+                    <label for="editEmail">E-mail</label>
+                    <div class="campo-com-botao">
+                        <input type="email" id="editEmail" placeholder="Digite o e-mail">
+                        <button type="button" class="btn-nao-informar" id="btnEditNaoInformarEmail" onclick="toggleNaoInformar('editEmail', 'btnEditNaoInformarEmail')">Não informar</button>
+                    </div>
+                </div>
+                <div>
+                    <label for="editEndereco">Endereço</label>
+                    <input type="text" id="editEndereco" placeholder="Digite o endereço">
+                </div>
+                <div>
+                    <label for="editTelefone">Telefone</label>
+                    <input type="text" id="editTelefone" placeholder="Digite o telefone">
+                </div>
+                <div>
+                    <label for="editStatus">Status</label>
+                    <select id="editStatus" style="width:100%; padding:10px 12px; border:2px solid #ddd; border-radius:6px; font-size:14px;">
+                        <option value="ativo">Ativo</option>
+                        <option value="inativo">Inativo</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="editMaterias">Selecionar Matérias</label>
+                    <select id="editMaterias" multiple style="width:100%; padding:10px 12px; border:2px solid #ddd; border-radius:6px; font-size:14px; min-height:120px;">
+                    </select>
+                    <div style="display:flex; gap:8px; margin-top:5px; flex-wrap:wrap;">
+                        <button type="button" onclick="selecionarTodasMateriasEdit(true)" style="background:#ff6600; color:white; border:none; padding:4px 15px; border-radius:4px; cursor:pointer; font-size:13px;">Selecionar Todas</button>
+                        <button type="button" onclick="selecionarTodasMateriasEdit(false)" style="background:#95a5a6; color:white; border:none; padding:4px 15px; border-radius:4px; cursor:pointer; font-size:13px;">Limpar Todas</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="btn-salvar-edicao" onclick="salvarEdicaoAluno()">Salvar Alterações</button>
+                <button class="btn-cancelar-edicao" onclick="fecharModalEditar()">Cancelar</button>
+            </div>
+            <div id="mensagemEditar" class="mensagem-admin"></div>
+        </div>
+    </div>
+
+    <!-- MODAL NOTAS DO ALUNO -->
+    <div id="modalNotas" class="modal-notas">
+        <div class="modal-content">
+            <span class="fechar-modal" onclick="fecharModalNotas()">&times;</span>
+            <h2 id="modalNotasTitulo">📊 Notas do Aluno</h2>
+            <div id="modalNotasCorpo"></div>
+        </div>
+    </div>
+
+    <!-- MODAL ADICIONAR NOTA -->
+    <div id="modalAddNota" class="modal-add-nota">
+        <div class="modal-content">
+            <span class="fechar-modal" onclick="fecharModalAddNota()">&times;</span>
+            <h3 id="modalAddNotaTitulo">Adicionar Nota</h3>
+            <div class="campo-nota">
+                <label for="inputNota">Nota (0 a 10)</label>
+                <input type="number" id="inputNota" min="0" max="10" step="0.1" placeholder="Digite a nota">
+            </div>
+            <button class="btn-salvar-nota" onclick="salvarNota()">Salvar Nota</button>
+            <div id="mensagemAddNota" class="mensagem-nota"></div>
+        </div>
+    </div>
+
+    <!-- ============================
+         FIREBASE - ORDEM CORRETA
+    ============================ -->
+
+    <!-- 1º Firebase App (SEMPRE PRIMEIRO) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+
+    <!-- 2º Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <!-- 3º Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+    <!-- 4º Configuração (SEMPRE POR ÚLTIMO) -->
+    <script src="firebase-config.js"></script>
+
+    <!-- 5º Código do Admin -->
+    <script>
+        // ============================
+        // VARIÁVEIS GLOBAIS
+        // ============================
+
+        var todosAlunos = [];
+        var todasMaterias = [];
+        var ordemCrescente = true;
+        var alunoEditandoId = null;
+        var alunoNotasId = null;
+        var disciplinaNotaId = null;
+
+        // Controle dos campos "Não informar"
+        var camposNaoInformados = {
+            'nomePaiAluno': false,
+            'nomeMaeAluno': false,
+            'dataNascimentoAluno': false,
+            'emailAluno': false,
+            'editNomePai': false,
+            'editNomeMae': false,
+            'editDataNascimento': false,
+            'editEmail': false
+        };
+
+        // ============================
+        // LISTA DE MATÉRIAS PADRÃO
+        // ============================
+
+        var materiasPadrao = [
+            'Artes',
+            'Educação Física',
+            'Filosofia',
+            'Sociologia',
+            'Inglês',
+            'Física',
+            'Química',
+            'Biologia',
+            'Geografia',
+            'História',
+            'Matemática',
+            'Língua Portuguesa',
+            'Programação',
+            'Banco de Dados'
+        ];
+
+        // ============================
+        // TOGGLE NÃO INFORMAR
+        // ============================
+
+        function toggleNaoInformar(campoId, botaoId) {
+            var campo = document.getElementById(campoId);
+            var botao = document.getElementById(botaoId);
+
+            if (camposNaoInformados[campoId]) {
+                // Reativar campo
+                camposNaoInformados[campoId] = false;
+                campo.disabled = false;
+                campo.style.background = '';
+                campo.value = '';
+                botao.classList.remove('ativo');
+                botao.textContent = 'Não informar';
+                campo.focus();
+            } else {
+                // Desativar campo
+                camposNaoInformados[campoId] = true;
+                campo.disabled = true;
+                campo.style.background = '#f0f0f0';
+                campo.value = '';
+                botao.classList.add('ativo');
+                botao.textContent = '✅ Não informado';
+            }
+        }
+
+        // ============================
+        // VERIFICAR AUTH
+        // ============================
+
+        console.log('🔍 Verificando autenticação...');
+
+        verificarAutenticacao().then(function(user) {
+            if (!user) {
+                alert('Você precisa estar logado para acessar esta página.');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            console.log('✅ Usuário autenticado:', user.email);
+            document.getElementById('loadingIndicator').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            
+            carregarMateriasPrimeiro();
+        }).catch(function(error) {
+            console.error('❌ Erro ao verificar autenticação:', error);
+        });
+
+        // ============================
+        // CARREGAR MATÉRIAS PRIMEIRO
+        // ============================
+
+        function carregarMateriasPrimeiro() {
+            console.log('📚 Carregando matérias...');
+            
+            buscarMateriasFirebase()
+                .then(function(snapshot) {
+                    todasMaterias = [];
+                    snapshot.forEach(function(doc) {
+                        var materia = doc.data();
+                        materia.id = doc.id;
+                        todasMaterias.push(materia);
+                    });
+                    
+                    console.log('📚 Matérias carregadas:', todasMaterias.length);
+                    
+                    if (todasMaterias.length === 0) {
+                        console.log('📚 Criando matérias padrão...');
+                        criarMateriasPadrao();
+                    } else {
+                        console.log('✅ Matérias já existem. Continuando...');
+                        carregarAlunosDepois();
+                    }
+                })
+                .catch(function(error) {
+                    console.error('❌ Erro ao carregar matérias:', error);
+                });
+        }
+
+        // ============================
+        // CRIAR MATÉRIAS PADRÃO
+        // ============================
+
+        function criarMateriasPadrao() {
+            var adicionadas = 0;
+            var total = materiasPadrao.length;
+            
+            materiasPadrao.forEach(function(nome) {
+                var materia = {
+                    nome: nome,
+                    apostilas: [],
+                    videos: [],
+                    testes: [],
+                    criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                adicionarMateriaFirebase(materia)
+                    .then(function() {
+                        adicionadas++;
+                        console.log('✅ Matéria criada:', nome);
+                        if (adicionadas === total) {
+                            console.log('📚 Todas as ' + total + ' matérias foram criadas!');
+                            carregarMateriasNovamente();
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('❌ Erro ao criar matéria:', nome, error);
+                        adicionadas++;
+                        if (adicionadas === total) {
+                            carregarMateriasNovamente();
+                        }
+                    });
+            });
+        }
+
+        function carregarMateriasNovamente() {
+            buscarMateriasFirebase()
+                .then(function(snapshot) {
+                    todasMaterias = [];
+                    snapshot.forEach(function(doc) {
+                        var materia = doc.data();
+                        materia.id = doc.id;
+                        todasMaterias.push(materia);
+                    });
+                    console.log('📚 Matérias recarregadas:', todasMaterias.length);
+                    carregarAlunosDepois();
+                })
+                .catch(function(error) {
+                    console.error('❌ Erro ao recarregar matérias:', error);
+                    carregarAlunosDepois();
+                });
+        }
+
+        // ============================
+        // CARREGAR ALUNOS
+        // ============================
+
+        function carregarAlunosDepois() {
+            console.log('👤 Carregando alunos...');
+            
+            buscarAlunosFirebase()
+                .then(function(snapshot) {
+                    todosAlunos = [];
+                    snapshot.forEach(function(doc) {
+                        var aluno = doc.data();
+                        aluno.id = doc.id;
+                        todosAlunos.push(aluno);
+                    });
+                    console.log('👤 Alunos carregados:', todosAlunos.length);
+                    
+                    renderizarAlunos();
+                    renderizarMaterias();
+                    atualizarDashboard();
+                    carregarMateriasSelect();
+                    carregarMateriasEditSelect();
+                })
+                .catch(function(error) {
+                    console.error('❌ Erro ao carregar alunos:', error);
+                });
+        }
+
+        function carregarDadosFirebase() {
+            carregarMateriasPrimeiro();
+        }
+
+        // ============================
+        // LOGOUT
+        // ============================
+
+        function logoutEFirebase() {
+            logoutUsuario()
+                .then(function() {
+                    window.location.href = 'login.html';
+                })
+                .catch(function(error) {
+                    console.error('❌ Erro ao sair:', error);
+                });
+        }
+
+        // ============================
+        // DASHBOARD
+        // ============================
+
+        function atualizarDashboard() {
+            var total = todosAlunos.length;
+            var ativos = todosAlunos.filter(function(a) { return a.status === 'ativo'; }).length;
+            var inativos = total - ativos;
+
+            document.getElementById('totalAlunos').textContent = total;
+            document.getElementById('alunosAtivos').textContent = ativos;
+            document.getElementById('alunosInativos').textContent = inativos;
+            document.getElementById('totalMaterias').textContent = todasMaterias.length;
+
+            document.getElementById('percentAtivos').textContent = total > 0 ? Math.round((ativos / total) * 100) + '%' : '0%';
+            document.getElementById('percentInativos').textContent = total > 0 ? Math.round((inativos / total) * 100) + '%' : '0%';
+        }
+
+        // ============================
+        // ABAS
+        // ============================
+
+        function trocarAba(aba) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('ativo'));
+            document.querySelectorAll('.admin-tabs button').forEach(el => el.classList.remove('ativo'));
+
+            if (aba === 'alunos') {
+                document.getElementById('tabAlunos').classList.add('ativo');
+                document.querySelector('.admin-tabs button:nth-child(1)').classList.add('ativo');
+            } else if (aba === 'materias') {
+                document.getElementById('tabMaterias').classList.add('ativo');
+                document.querySelector('.admin-tabs button:nth-child(2)').classList.add('ativo');
+            } else if (aba === 'sugestoes') {
+                document.getElementById('tabSugestoes').classList.add('ativo');
+                document.querySelector('.admin-tabs button:nth-child(3)').classList.add('ativo');
+                carregarSugestoesAdmin();
+            }
+        }
+
+        // ============================
+        // RENDERIZAR ALUNOS
+        // ============================
+
+        function renderizarAlunos() {
+            var lista = document.getElementById('listaAlunos');
+
+            if (todosAlunos.length === 0) {
+                lista.innerHTML = '<p class="sem-dados">Nenhum aluno cadastrado ainda.</p>';
+                return;
+            }
+
+            var html = `
+                <table class="tabela-dados" id="tabelaAlunos">
+                    <thead>
+                        <tr>
+                            <th onclick="ordenarAlunos()">Nome ↕</th>
+                            <th>CPF</th>
+                            <th>Status</th>
+                            <th>Matérias</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            todosAlunos.forEach(function(aluno) {
+                var statusClass = aluno.status === 'ativo' ? 'style="color:#27ae60;"' : 'style="color:#e74c3c;"';
+                var materiasCount = aluno.materias ? aluno.materias.length : 0;
+
+                html += `
+                    <tr data-nome="${aluno.nome || ''}" data-cpf="${aluno.cpf || ''}">
+                        <td>${aluno.nome || '-'}</td>
+                        <td>${aluno.cpf || '-'}</td>
+                        <td ${statusClass}>${aluno.status || 'ativo'}</td>
+                        <td>${materiasCount} matérias</td>
+                        <td>
+                            <button class="btn-editar" onclick="abrirModalEditar('${aluno.id}')">✏️ Editar</button>
+                            <button class="btn-editar" onclick="abrirModalNotas('${aluno.id}')" style="background:#ff6600;">📊 Notas</button>
+                            <button class="btn-excluir" onclick="excluirAlunoFirebase('${aluno.id}')">🗑️ Excluir</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            lista.innerHTML = html;
+        }
+
+        // ============================
+        // FUNÇÃO DE BUSCA
+        // ============================
+
+        function buscarAluno() {
+            var termo = document.getElementById('buscaAluno').value.toLowerCase().trim();
+            var linhas = document.querySelectorAll('#tabelaAlunos tbody tr');
+            var encontrou = false;
+
+            linhas.forEach(function(linha) {
+                var nome = linha.getAttribute('data-nome') ? linha.getAttribute('data-nome').toLowerCase() : '';
+                var cpf = linha.getAttribute('data-cpf') ? linha.getAttribute('data-cpf').toLowerCase() : '';
+                
+                if (termo === '') {
+                    linha.style.display = '';
+                    encontrou = true;
+                } else if (nome.includes(termo) || cpf.includes(termo)) {
+                    linha.style.display = '';
+                    encontrou = true;
+                } else {
+                    linha.style.display = 'none';
+                }
+            });
+
+            var mensagem = document.querySelector('#tabelaAlunos tbody');
+            if (!encontrou && termo !== '') {
+                var semResultados = document.getElementById('semResultados');
+                if (!semResultados) {
+                    var tr = document.createElement('tr');
+                    tr.id = 'semResultados';
+                    tr.innerHTML = '<td colspan="5" style="text-align:center; color:#999; padding:30px;">🔍 Nenhum aluno encontrado para "' + termo + '"</td>';
+                    mensagem.appendChild(tr);
+                } else {
+                    semResultados.innerHTML = '<td colspan="5" style="text-align:center; color:#999; padding:30px;">🔍 Nenhum aluno encontrado para "' + termo + '"</td>';
+                }
+            } else {
+                var semResultados = document.getElementById('semResultados');
+                if (semResultados) {
+                    semResultados.remove();
+                }
+            }
+        }
+
+        function limparBusca() {
+            document.getElementById('buscaAluno').value = '';
+            var linhas = document.querySelectorAll('#tabelaAlunos tbody tr');
+            linhas.forEach(function(linha) {
+                linha.style.display = '';
+            });
+            var semResultados = document.getElementById('semResultados');
+            if (semResultados) {
+                semResultados.remove();
+            }
+        }
+
+        function ordenarAlunos() {
+            ordemCrescente = !ordemCrescente;
+            todosAlunos.sort(function(a, b) {
+                var nomeA = (a.nome || '').toLowerCase();
+                var nomeB = (b.nome || '').toLowerCase();
+                if (ordemCrescente) {
+                    return nomeA.localeCompare(nomeB);
+                } else {
+                    return nomeB.localeCompare(nomeA);
+                }
+            });
+            renderizarAlunos();
+            document.querySelector('.btn-ordenar').textContent = ordemCrescente ? '🔤 Ordenar Z-A' : '🔤 Ordenar A-Z';
+            limparBusca();
+        }
+
+        // ============================
+        // ADICIONAR ALUNO
+        // ============================
+
+        function adicionarAlunoFirebase() {
+            var nome = document.getElementById('nomeAluno').value.trim();
+            var cpf = document.getElementById('cpfAluno').value.trim();
+            var nomePai = camposNaoInformados['nomePaiAluno'] ? '' : document.getElementById('nomePaiAluno').value.trim();
+            var nomeMae = camposNaoInformados['nomeMaeAluno'] ? '' : document.getElementById('nomeMaeAluno').value.trim();
+            var dataNascimento = camposNaoInformados['dataNascimentoAluno'] ? '' : document.getElementById('dataNascimentoAluno').value;
+            var email = camposNaoInformados['emailAluno'] ? '' : document.getElementById('emailAluno').value.trim();
+            var endereco = document.getElementById('enderecoAluno').value.trim();
+            var telefone = document.getElementById('telefoneAluno').value.trim();
+            var status = document.getElementById('statusAluno').value;
+            var selectMaterias = document.getElementById('materiasAluno');
+            var materiasSelecionadas = [];
+
+            for (var i = 0; i < selectMaterias.options.length; i++) {
+                if (selectMaterias.options[i].selected) {
+                    materiasSelecionadas.push(selectMaterias.options[i].value);
+                }
+            }
+
+            var mensagem = document.getElementById('mensagemAluno');
+
+            if (nome === '') {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Preencha o nome do aluno.';
+                return;
+            }
+
+            if (cpf === '' || cpf.length !== 11 || !/^[0-9]+$/.test(cpf)) {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ CPF inválido. Digite exatamente 11 números.';
+                return;
+            }
+
+            if (endereco === '') {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Preencha o endereço do aluno.';
+                return;
+            }
+
+            if (telefone === '') {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Preencha o telefone do aluno.';
+                return;
+            }
+
+            if (materiasSelecionadas.length === 0) {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Selecione pelo menos uma matéria.';
+                return;
+            }
+
+            console.log('🔍 Verificando CPF:', cpf);
+
+            db.collection('alunos').where('cpf', '==', cpf).get()
+                .then(function(snapshot) {
+                    console.log('📋 Resultado da busca:', snapshot.empty ? 'vazio' : 'encontrou');
+                    
+                    if (!snapshot.empty) {
+                        mensagem.className = 'mensagem-admin erro';
+                        mensagem.textContent = '⚠️ Este CPF já está cadastrado.';
+                        return;
+                    }
+
+                    var notas = {};
+                    materiasSelecionadas.forEach(function(materiaId) {
+                        notas[materiaId] = {
+                            nota1: null,
+                            nota2: null,
+                            notaFinal: null
+                        };
+                    });
+
+                    var aluno = {
+                        nome: nome,
+                        cpf: cpf,
+                        nomePai: nomePai,
+                        nomeMae: nomeMae,
+                        dataNascimento: dataNascimento,
+                        email: email,
+                        endereco: endereco,
+                        telefone: telefone,
+                        status: status,
+                        materias: materiasSelecionadas,
+                        notas: notas,
+                        linksAcessados: [],
+                        criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+
+                    console.log('📤 Enviando aluno:', aluno);
+
+                    db.collection('alunos').add(aluno)
+                        .then(function(docRef) {
+                            console.log('✅ Aluno adicionado com ID:', docRef.id);
+                            mensagem.className = 'mensagem-admin sucesso';
+                            mensagem.textContent = '✅ Aluno cadastrado com sucesso!';
+                            limparFormularioAluno();
+                            carregarAlunosDepois();
+                            setTimeout(function() {
+                                mensagem.className = 'mensagem-admin';
+                                mensagem.textContent = '';
+                            }, 3000);
+                        })
+                        .catch(function(error) {
+                            console.error('❌ Erro ao cadastrar aluno:', error);
+                            mensagem.className = 'mensagem-admin erro';
+                            mensagem.textContent = '❌ Erro ao cadastrar: ' + error.message;
+                        });
+                })
+                .catch(function(error) {
+                    console.error('❌ Erro ao verificar CPF:', error);
+                    mensagem.className = 'mensagem-admin erro';
+                    mensagem.textContent = '❌ Erro ao verificar CPF: ' + error.message;
+                });
+        }
+
+        // ============================
+        // EXCLUIR ALUNO
+        // ============================
+
+        function excluirAlunoFirebase(id) {
+            if (confirm('Tem certeza que deseja excluir este aluno?')) {
+                db.collection('alunos').doc(id).delete()
+                    .then(function() {
+                        carregarAlunosDepois();
+                    })
+                    .catch(function(error) {
+                        alert('Erro ao excluir aluno: ' + error.message);
+                    });
+            }
+        }
+
+        function limparFormularioAluno() {
+            document.getElementById('nomeAluno').value = '';
+            document.getElementById('cpfAluno').value = '';
+            document.getElementById('enderecoAluno').value = '';
+            document.getElementById('telefoneAluno').value = '';
+            document.getElementById('statusAluno').value = 'ativo';
+
+            // Limpar campos com "Não informar"
+            ['nomePaiAluno', 'nomeMaeAluno', 'dataNascimentoAluno', 'emailAluno'].forEach(function(campoId) {
+                var campo = document.getElementById(campoId);
+                var botao = document.getElementById('btn' + campoId.charAt(0).toUpperCase() + campoId.slice(1).replace('Aluno', 'Aluno'));
+                
+                campo.value = '';
+                campo.disabled = false;
+                campo.style.background = '';
+                camposNaoInformados[campoId] = false;
+                
+                // Encontrar o botão correto
+                var botoes = document.querySelectorAll('.btn-nao-informar');
+                botoes.forEach(function(btn) {
+                    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(campoId)) {
+                        btn.classList.remove('ativo');
+                        btn.textContent = 'Não informar';
+                    }
+                });
+            });
+
+            var select = document.getElementById('materiasAluno');
+            for (var i = 0; i < select.options.length; i++) {
+                select.options[i].selected = false;
+            }
+            document.getElementById('mensagemAluno').className = 'mensagem-admin';
+            document.getElementById('mensagemAluno').textContent = '';
+        }
+
+        // ============================
+        // MATÉRIAS SELECT
+        // ============================
+
+        function carregarMateriasSelect() {
+            var select = document.getElementById('materiasAluno');
+            select.innerHTML = '';
+            todasMaterias.forEach(function(materia) {
+                var option = document.createElement('option');
+                option.value = materia.id;
+                option.textContent = materia.nome;
+                select.appendChild(option);
+            });
+        }
+
+        function selecionarTodasMaterias(selecionar) {
+            var select = document.getElementById('materiasAluno');
+            for (var i = 0; i < select.options.length; i++) {
+                select.options[i].selected = selecionar;
+            }
+        }
+
+        // ============================
+        // MODAL EDITAR ALUNO
+        // ============================
+
+        function abrirModalEditar(alunoId) {
+            alunoEditandoId = alunoId;
+            var aluno = todosAlunos.find(function(a) { return a.id === alunoId; });
+
+            if (!aluno) {
+                alert('Aluno não encontrado.');
+                return;
+            }
+
+            document.getElementById('editNome').value = aluno.nome || '';
+            document.getElementById('editCpf').value = aluno.cpf || '';
+            document.getElementById('editEndereco').value = aluno.endereco || '';
+            document.getElementById('editTelefone').value = aluno.telefone || '';
+            document.getElementById('editStatus').value = aluno.status || 'ativo';
+
+            // Preencher campos adicionais
+            document.getElementById('editNomePai').value = aluno.nomePai || '';
+            document.getElementById('editNomeMae').value = aluno.nomeMae || '';
+            document.getElementById('editDataNascimento').value = aluno.dataNascimento || '';
+            document.getElementById('editEmail').value = aluno.email || '';
+
+            // Resetar estado dos botões "Não informar"
+            ['editNomePai', 'editNomeMae', 'editDataNascimento', 'editEmail'].forEach(function(campoId) {
+                camposNaoInformados[campoId] = false;
+                var campo = document.getElementById(campoId);
+                campo.disabled = false;
+                campo.style.background = '';
+                
+                var botoes = document.querySelectorAll('.btn-nao-informar');
+                botoes.forEach(function(btn) {
+                    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(campoId)) {
+                        btn.classList.remove('ativo');
+                        btn.textContent = 'Não informar';
+                    }
+                });
+            });
+
+            var select = document.getElementById('editMaterias');
+            for (var i = 0; i < select.options.length; i++) {
+                select.options[i].selected = aluno.materias && aluno.materias.includes(select.options[i].value);
+            }
+
+            document.getElementById('mensagemEditar').className = 'mensagem-admin';
+            document.getElementById('mensagemEditar').textContent = '';
+            document.getElementById('modalEditar').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModalEditar() {
+            document.getElementById('modalEditar').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function carregarMateriasEditSelect() {
+            var select = document.getElementById('editMaterias');
+            select.innerHTML = '';
+            todasMaterias.forEach(function(materia) {
+                var option = document.createElement('option');
+                option.value = materia.id;
+                option.textContent = materia.nome;
+                select.appendChild(option);
+            });
+        }
+
+        function selecionarTodasMateriasEdit(selecionar) {
+            var select = document.getElementById('editMaterias');
+            for (var i = 0; i < select.options.length; i++) {
+                select.options[i].selected = selecionar;
+            }
+        }
+
+        function salvarEdicaoAluno() {
+            var nome = document.getElementById('editNome').value.trim();
+            var cpf = document.getElementById('editCpf').value.trim();
+            var nomePai = camposNaoInformados['editNomePai'] ? '' : document.getElementById('editNomePai').value.trim();
+            var nomeMae = camposNaoInformados['editNomeMae'] ? '' : document.getElementById('editNomeMae').value.trim();
+            var dataNascimento = camposNaoInformados['editDataNascimento'] ? '' : document.getElementById('editDataNascimento').value;
+            var email = camposNaoInformados['editEmail'] ? '' : document.getElementById('editEmail').value.trim();
+            var endereco = document.getElementById('editEndereco').value.trim();
+            var telefone = document.getElementById('editTelefone').value.trim();
+            var status = document.getElementById('editStatus').value;
+            var selectMaterias = document.getElementById('editMaterias');
+            var materiasSelecionadas = [];
+
+            for (var i = 0; i < selectMaterias.options.length; i++) {
+                if (selectMaterias.options[i].selected) {
+                    materiasSelecionadas.push(selectMaterias.options[i].value);
+                }
+            }
+
+            var mensagem = document.getElementById('mensagemEditar');
+
+            if (nome === '') {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Preencha o nome do aluno.';
+                return;
+            }
+
+            if (cpf === '' || cpf.length !== 11 || !/^[0-9]+$/.test(cpf)) {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ CPF inválido. Digite exatamente 11 números.';
+                return;
+            }
+
+            if (endereco === '') {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Preencha o endereço do aluno.';
+                return;
+            }
+
+            if (telefone === '') {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Preencha o telefone do aluno.';
+                return;
+            }
+
+            if (materiasSelecionadas.length === 0) {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Selecione pelo menos uma matéria.';
+                return;
+            }
+
+            var aluno = todosAlunos.find(function(a) { return a.id === alunoEditandoId; });
+            if (!aluno) {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Aluno não encontrado.';
+                return;
+            }
+
+            var cpfExistente = todosAlunos.some(function(a) {
+                return a.cpf === cpf && a.id !== alunoEditandoId;
+            });
+
+            if (cpfExistente) {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Este CPF já está cadastrado para outro aluno.';
+                return;
+            }
+
+            var materiasAntigas = aluno.materias || [];
+            var materiasNovas = materiasSelecionadas;
+
+            materiasAntigas.forEach(function(materiaId) {
+                if (!materiasNovas.includes(materiaId)) {
+                    delete aluno.notas[materiaId];
+                }
+            });
+
+            materiasNovas.forEach(function(materiaId) {
+                if (!materiasAntigas.includes(materiaId)) {
+                    aluno.notas[materiaId] = {
+                        nota1: null,
+                        nota2: null,
+                        notaFinal: null
+                    };
+                }
+            });
+
+            aluno.nome = nome;
+            aluno.cpf = cpf;
+            aluno.nomePai = nomePai;
+            aluno.nomeMae = nomeMae;
+            aluno.dataNascimento = dataNascimento;
+            aluno.email = email;
+            aluno.endereco = endereco;
+            aluno.telefone = telefone;
+            aluno.status = status;
+            aluno.materias = materiasNovas;
+
+            db.collection('alunos').doc(alunoEditandoId).update({
+                nome: nome,
+                cpf: cpf,
+                nomePai: nomePai,
+                nomeMae: nomeMae,
+                dataNascimento: dataNascimento,
+                email: email,
+                endereco: endereco,
+                telefone: telefone,
+                status: status,
+                materias: materiasNovas,
+                notas: aluno.notas
+            }).then(function() {
+                mensagem.className = 'mensagem-admin sucesso';
+                mensagem.textContent = '✅ Aluno atualizado com sucesso!';
+                setTimeout(function() {
+                    fecharModalEditar();
+                    carregarAlunosDepois();
+                }, 1500);
+            }).catch(function(error) {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '❌ Erro ao atualizar: ' + error.message;
+            });
+        }
+
+        // ============================
+        // EXPORTAR PDF
+        // ============================
+
+        function exportarPDF() {
+            if (todosAlunos.length === 0) {
+                alert('⚠️ Nenhum aluno cadastrado para exportar.');
+                return;
+            }
+
+            var dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            var horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            var htmlPDF = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Relatório de Alunos - Instituto Meta</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 30px; background: white; }
+                        .container { max-width: 100%; margin: 0 auto; }
+                        .header { text-align: center; border-bottom: 3px solid #ff6600; padding-bottom: 20px; margin-bottom: 30px; }
+                        .header h1 { color: #ff6600; font-size: 28px; margin: 0; }
+                        .header p { color: #888; font-size: 14px; margin: 5px 0 0; }
+                        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+                        th { background: #ff6600; color: white; padding: 10px; text-align: left; }
+                        td { padding: 8px 10px; border-bottom: 1px solid #ddd; }
+                        tr:hover { background: #fff3ea; }
+                        .status-ativo { color: #27ae60; font-weight: bold; }
+                        .status-inativo { color: #e74c3c; font-weight: bold; }
+                        .footer { margin-top: 30px; text-align: center; border-top: 1px solid #ddd; padding-top: 20px; font-size: 12px; color: #888; }
+                        .notas-cell { font-size: 11px; }
+                        .aprovado { color: #27ae60; }
+                        .reprovado { color: #e74c3c; }
+                        .sem-nota { color: #999; }
+                        @media print { body { padding: 20px; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>🏫 Instituto Meta</h1>
+                            <p>Relatório de Alunos - Emitido em ${dataAtual} às ${horaAtual}</p>
+                            <p style="color:#888; font-size:12px;">Total de alunos: ${todosAlunos.length}</p>
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>CPF</th>
+                                    <th>Nome do Pai</th>
+                                    <th>Nome da Mãe</th>
+                                    <th>Data Nasc.</th>
+                                    <th>E-mail</th>
+                                    <th>Telefone</th>
+                                    <th>Status</th>
+                                    <th>Matérias</th>
+                                    <th>Notas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            todosAlunos.forEach(function(aluno) {
+                var statusClass = aluno.status === 'ativo' ? 'status-ativo' : 'status-inativo';
+                var statusText = aluno.status === 'ativo' ? '✅ Ativo' : '❌ Inativo';
+                var materiasCount = aluno.materias ? aluno.materias.length : 0;
+
+                var notasHtml = '';
+                if (aluno.materias && aluno.materias.length > 0) {
+                    aluno.materias.forEach(function(materiaId) {
+                        var materia = todasMaterias.find(function(m) { return m.id === materiaId; });
+                        var nomeMateria = materia ? materia.nome : 'Matéria não encontrada';
+                        var notas = aluno.notas && aluno.notas[materiaId] ? aluno.notas[materiaId] : { nota1: null, nota2: null, notaFinal: null };
+                        var nota1 = notas.nota1 !== null && notas.nota1 !== undefined ? notas.nota1 : '-';
+                        var nota2 = notas.nota2 !== null && notas.nota2 !== undefined ? notas.nota2 : '-';
+                        var notaFinal = notas.notaFinal !== null && notas.notaFinal !== undefined ? notas.notaFinal : '-';
+                        
+                        var notaClass = '';
+                        var statusNota = '';
+                        if (notas.notaFinal !== null && notas.notaFinal !== undefined) {
+                            notaClass = notas.notaFinal >= 6 ? 'aprovado' : 'reprovado';
+                            statusNota = notas.notaFinal >= 6 ? '✅ Aprovado' : '❌ Reprovado';
+                        } else {
+                            notaClass = 'sem-nota';
+                            statusNota = '⏳ Cursando';
+                        }
+
+                        notasHtml += `
+                            <div style="border-bottom:1px solid #eee; padding:3px 0; font-size:11px;">
+                                <strong>${nomeMateria}</strong><br>
+                                N1: ${nota1} | N2: ${nota2} | NF: <span class="${notaClass}">${notaFinal}</span> - ${statusNota}
+                            </div>
+                        `;
+                    });
+                } else {
+                    notasHtml = '<span style="color:#999;">Nenhuma matéria cadastrada</span>';
+                }
+
+                htmlPDF += `
+                    <tr>
+                        <td><strong>${aluno.nome || '-'}</strong></td>
+                        <td>${aluno.cpf || '-'}</td>
+                        <td>${aluno.nomePai || '-'}</td>
+                        <td>${aluno.nomeMae || '-'}</td>
+                        <td>${aluno.dataNascimento ? new Date(aluno.dataNascimento + 'T00:00:00').toLocaleDateString('pt-BR') : '-'}</td>
+                        <td>${aluno.email || '-'}</td>
+                        <td>${aluno.telefone || '-'}</td>
+                        <td class="${statusClass}">${statusText}</td>
+                        <td>${materiasCount} matérias</td>
+                        <td class="notas-cell">${notasHtml}</td>
+                    </tr>
+                `;
+            });
+
+            htmlPDF += `
+                            </tbody>
+                        </table>
+
+                        <div class="footer">
+                            <p>Rua Pau D'Arco, Gurupilândia, Nova Esperança do Piriá</p>
+                            <p>📱 (91) 98440-0383 | 📷 @institutometa.nep</p>
+                            <p>© ${new Date().getFullYear()} - Instituto Meta</p>
+                        </div>
+                    </div>
+                    <script>
+                        window.print();
+                    <\/script>
+                </body>
+                </html>
+            `;
+
+            var janela = window.open('', '_blank', 'width=1000,height=800');
+            janela.document.write(htmlPDF);
+            janela.document.close();
+        }
+
+        // ============================
+        // MODAL NOTAS DO ALUNO
+        // ============================
+
+        function abrirModalNotas(alunoId) {
+            alunoNotasId = alunoId;
+            var aluno = todosAlunos.find(function(a) { return a.id === alunoId; });
+
+            if (!aluno) {
+                alert('Aluno não encontrado.');
+                return;
+            }
+
+            var modal = document.getElementById('modalNotas');
+            var titulo = document.getElementById('modalNotasTitulo');
+            var corpo = document.getElementById('modalNotasCorpo');
+
+            titulo.textContent = '📊 Notas - ' + aluno.nome;
+
+            var html = `
+                <div class="info-aluno">
+                    <div class="item"><strong>CPF:</strong> ${aluno.cpf}</div>
+                    <div class="item"><strong>Status:</strong> ${aluno.status}</div>
+                    ${aluno.nomePai ? `<div class="item"><strong>Pai:</strong> ${aluno.nomePai}</div>` : ''}
+                    ${aluno.nomeMae ? `<div class="item"><strong>Mãe:</strong> ${aluno.nomeMae}</div>` : ''}
+                    ${aluno.dataNascimento ? `<div class="item"><strong>Nascimento:</strong> ${new Date(aluno.dataNascimento + 'T00:00:00').toLocaleDateString('pt-BR')}</div>` : ''}
+                    ${aluno.email ? `<div class="item"><strong>E-mail:</strong> ${aluno.email}</div>` : ''}
+                </div>
+            `;
+
+            if (aluno.materias && aluno.materias.length > 0) {
+                aluno.materias.forEach(function(materiaId) {
+                    var materia = todasMaterias.find(function(m) { return m.id === materiaId; });
+                    var nomeMateria = materia ? materia.nome : 'Matéria não encontrada';
+
+                    var notas = aluno.notas && aluno.notas[materiaId] ? aluno.notas[materiaId] : { nota1: null, nota2: null, notaFinal: null };
+                    var nota1 = notas.nota1 !== null && notas.nota1 !== undefined ? notas.nota1 : '-';
+                    var nota2 = notas.nota2 !== null && notas.nota2 !== undefined ? notas.nota2 : '-';
+                    var notaFinal = notas.notaFinal !== null && notas.notaFinal !== undefined ? notas.notaFinal : '-';
+
+                    var notaFinalClass = '';
+                    if (notas.notaFinal !== null && notas.notaFinal !== undefined) {
+                        notaFinalClass = notas.notaFinal >= 6 ? 'aprovado' : 'reprovado';
+                    }
+
+                    html += `
+                        <div class="disciplina-item">
+                            <span class="nome-disc">📘 ${nomeMateria}</span>
+                            <span class="nota-disc">
+                                N1: ${nota1} | N2: ${nota2} | NF: <span class="${notaFinalClass}">${notaFinal}</span>
+                            </span>
+                            <button class="btn-nota" onclick="abrirModalAddNota('${materiaId}')">➕ Nota</button>
+                        </div>
+                    `;
+                });
+            } else {
+                html += `<p style="color:#999;">Aluno não cadastrado em nenhuma disciplina.</p>`;
+            }
+
+            corpo.innerHTML = html;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModalNotas() {
+            document.getElementById('modalNotas').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('modalNotas').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalNotas();
+        });
+
+        // ============================
+        // MODAL ADICIONAR NOTA
+        // ============================
+
+        function abrirModalAddNota(materiaId) {
+            disciplinaNotaId = materiaId;
+            var materia = todasMaterias.find(function(m) { return m.id === materiaId; });
+            var nomeMateria = materia ? materia.nome : 'Matéria';
+
+            document.getElementById('modalAddNotaTitulo').textContent = '📝 Adicionar Nota - ' + nomeMateria;
+            document.getElementById('inputNota').value = '';
+            document.getElementById('mensagemAddNota').textContent = '';
+            document.getElementById('modalAddNota').style.display = 'flex';
+            document.getElementById('inputNota').focus();
+        }
+
+        function fecharModalAddNota() {
+            document.getElementById('modalAddNota').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('modalAddNota').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalAddNota();
+        });
+
+        function salvarNota() {
+            var input = document.getElementById('inputNota');
+            var nota = parseFloat(input.value);
+            var mensagem = document.getElementById('mensagemAddNota');
+
+            if (isNaN(nota) || nota < 0 || nota > 10) {
+                mensagem.textContent = '⚠️ Digite uma nota entre 0 e 10.';
+                return;
+            }
+
+            var aluno = todosAlunos.find(function(a) { return a.id === alunoNotasId; });
+            if (!aluno) {
+                mensagem.textContent = '⚠️ Erro ao encontrar aluno.';
+                return;
+            }
+
+            if (!aluno.notas) aluno.notas = {};
+            if (!aluno.notas[disciplinaNotaId]) {
+                aluno.notas[disciplinaNotaId] = { nota1: null, nota2: null, notaFinal: null };
+            }
+
+            var notas = aluno.notas[disciplinaNotaId];
+
+            if (notas.nota1 === null || notas.nota1 === undefined) {
+                notas.nota1 = nota;
+            } else if (notas.nota2 === null || notas.nota2 === undefined) {
+                notas.nota2 = nota;
+                var media = (notas.nota1 + notas.nota2) / 2;
+                notas.notaFinal = Math.round(media * 10) / 10;
+            } else {
+                mensagem.textContent = '⚠️ Este aluno já possui as duas notas cadastradas para esta disciplina.';
+                return;
+            }
+
+            db.collection('alunos').doc(alunoNotasId).update({ notas: aluno.notas })
+                .then(function() {
+                    fecharModalAddNota();
+                    carregarAlunosDepois();
+                    setTimeout(function() {
+                        abrirModalNotas(alunoNotasId);
+                    }, 300);
+                })
+                .catch(function(error) {
+                    mensagem.textContent = '❌ Erro ao salvar nota: ' + error.message;
+                });
+        }
+
+        // ============================
+        // MATÉRIAS
+        // ============================
+
+        function renderizarMaterias() {
+            var lista = document.getElementById('listaMaterias');
+
+            if (todasMaterias.length === 0) {
+                lista.innerHTML = '<p class="sem-dados">Nenhuma matéria cadastrada.</p>';
+                return;
+            }
+
+            var html = '<div class="materias-grid">';
+
+            todasMaterias.forEach(function(materia, index) {
+                var totalApostilas = materia.apostilas ? materia.apostilas.length : 0;
+                var totalVideos = materia.videos ? materia.videos.length : 0;
+                var totalTestes = materia.testes ? materia.testes.length : 0;
+
+                html += `
+                    <div class="materia-card">
+                        <div class="header">
+                            <span class="nome">📘 ${materia.nome}</span>
+                            <span class="stats">📄${totalApostilas} 📹${totalVideos} 📝${totalTestes}</span>
+                        </div>
+                        <div class="acoes">
+                            <button class="btn-materia azul" onclick="editarMateria(${index})">✏️ Editar</button>
+                            <button class="btn-materia vermelho" onclick="excluirMateriaFirebase('${materia.id}')">🗑️</button>
+                        </div>
+                        <div id="subMateria_${index}" style="display:none;" class="sub-materia"></div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            lista.innerHTML = html;
+        }
+
+        function adicionarMateriaFirebase() {
+            var nome = document.getElementById('nomeMateria').value.trim();
+            var mensagem = document.getElementById('mensagemMateria');
+
+            if (nome === '') {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Digite o nome da matéria.';
+                return;
+            }
+
+            var existe = todasMaterias.some(function(m) {
+                return m.nome.toLowerCase() === nome.toLowerCase();
+            });
+
+            if (existe) {
+                mensagem.className = 'mensagem-admin erro';
+                mensagem.textContent = '⚠️ Esta matéria já existe.';
+                return;
+            }
+
+            var materia = {
+                nome: nome,
+                apostilas: [],
+                videos: [],
+                testes: [],
+                criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('materias').add(materia)
+                .then(function(docRef) {
+                    mensagem.className = 'mensagem-admin sucesso';
+                    mensagem.textContent = '✅ Matéria "' + nome + '" adicionada com sucesso!';
+                    document.getElementById('nomeMateria').value = '';
+                    carregarMateriasPrimeiro();
+                    setTimeout(function() {
+                        mensagem.className = 'mensagem-admin';
+                        mensagem.textContent = '';
+                    }, 1500);
+                })
+                .catch(function(error) {
+                    mensagem.className = 'mensagem-admin erro';
+                    mensagem.textContent = '❌ Erro ao adicionar: ' + error.message;
+                });
+        }
+
+        function excluirMateriaFirebase(id) {
+            if (confirm('Tem certeza que deseja excluir esta matéria?')) {
+                db.collection('materias').doc(id).delete()
+                    .then(function() {
+                        carregarMateriasPrimeiro();
+                    })
+                    .catch(function(error) {
+                        alert('Erro ao excluir matéria: ' + error.message);
+                    });
+            }
+        }
+
+        function editarMateria(index) {
+            var materia = todasMaterias[index];
+            var div = document.getElementById('subMateria_' + index);
+
+            if (div.style.display === 'block') {
+                div.style.display = 'none';
+                div.innerHTML = '';
+                return;
+            }
+
+            var html = `
+                <h4 style="color:#ff6600; margin-bottom:10px;">✏️ Editando: ${materia.nome}</h4>
+
+                <div style="margin-bottom:12px;">
+                    <div class="flex-row">
+                        <input type="text" id="renomearInput_${index}" value="${materia.nome}" style="flex:1;">
+                        <button class="btn-materia verde" onclick="renomearMateria(${index})">Salvar Nome</button>
+                    </div>
+                </div>
+
+                <hr style="margin:12px 0;">
+
+                <div style="margin-bottom:12px;">
+                    <strong style="font-size:14px;">📄 Apostilas</strong>
+                    <div class="flex-row" style="margin-top:5px;">
+                        <input type="text" id="apostilaInput_${index}" placeholder="Link do Google Drive">
+                        <button class="btn-materia verde" onclick="adicionarApostila(${index})">+ Adicionar</button>
+                    </div>
+                    <div id="apostilasLista_${index}" style="margin-top:6px;">
+                        ${(materia.apostilas || []).map(function(item, i) {
+                            return `<div class="item"><a href="${item}" target="_blank" class="link">📄 Apostila ${i+1}</a><button class="btn-remover" onclick="removerItem(${index}, 'apostilas', ${i})">✕</button></div>`;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <div style="margin-bottom:12px;">
+                    <strong style="font-size:14px;">📹 Vídeos</strong>
+                    <div class="flex-row" style="margin-top:5px;">
+                        <input type="text" id="videoInput_${index}" placeholder="Link do vídeo (YouTube, Drive...)">
+                        <button class="btn-materia azul" onclick="adicionarVideo(${index})">+ Adicionar</button>
+                    </div>
+                    <div id="videosLista_${index}" style="margin-top:6px;">
+                        ${(materia.videos || []).map(function(item, i) {
+                            return `<div class="item"><a href="${item}" target="_blank" class="link">📹 Vídeo ${i+1}</a><button class="btn-remover" onclick="removerItem(${index}, 'videos', ${i})">✕</button></div>`;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <div style="margin-bottom:12px;">
+                    <strong style="font-size:14px;">📝 Testes</strong>
+                    <div class="flex-row" style="margin-top:5px;">
+                        <input type="text" id="testeInput_${index}" placeholder="Link do teste (Google Forms, etc...)">
+                        <button class="btn-materia" onclick="adicionarTeste(${index})">+ Adicionar</button>
+                    </div>
+                    <div id="testesLista_${index}" style="margin-top:6px;">
+                        ${(materia.testes || []).map(function(item, i) {
+                            return `<div class="item"><a href="${item}" target="_blank" class="link">📝 Teste ${i+1}</a><button class="btn-remover" onclick="removerItem(${index}, 'testes', ${i})">✕</button></div>`;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <button class="btn-cancelar" onclick="fecharEdicao(${index})" style="margin-left:0; margin-top:5px;">Fechar Edição</button>
+            `;
+
+            div.innerHTML = html;
+            div.style.display = 'block';
+        }
+
+        function fecharEdicao(index) {
+            var div = document.getElementById('subMateria_' + index);
+            div.style.display = 'none';
+            div.innerHTML = '';
+        }
+
+        function renomearMateria(index) {
+            var input = document.getElementById('renomearInput_' + index);
+            var novoNome = input.value.trim();
+
+            if (novoNome === '') {
+                alert('Digite um nome válido.');
+                return;
+            }
+
+            var materia = todasMaterias[index];
+            db.collection('materias').doc(materia.id).update({ nome: novoNome })
+                .then(function() {
+                    carregarMateriasPrimeiro();
+                    setTimeout(function() { editarMateria(index); }, 100);
+                })
+                .catch(function(error) {
+                    alert('Erro ao renomear: ' + error.message);
+                });
+        }
+
+        function adicionarApostila(index) {
+            var input = document.getElementById('apostilaInput_' + index);
+            var link = input.value.trim();
+
+            if (link === '') {
+                alert('Digite o link da apostila.');
+                return;
+            }
+
+            var materia = todasMaterias[index];
+            var apostilas = materia.apostilas || [];
+            apostilas.push(link);
+
+            db.collection('materias').doc(materia.id).update({ apostilas: apostilas })
+                .then(function() {
+                    input.value = '';
+                    carregarMateriasPrimeiro();
+                    setTimeout(function() { editarMateria(index); }, 100);
+                })
+                .catch(function(error) {
+                    alert('Erro ao adicionar apostila: ' + error.message);
+                });
+        }
+
+        function adicionarVideo(index) {
+            var input = document.getElementById('videoInput_' + index);
+            var link = input.value.trim();
+
+            if (link === '') {
+                alert('Digite o link do vídeo.');
+                return;
+            }
+
+            var materia = todasMaterias[index];
+            var videos = materia.videos || [];
+            videos.push(link);
+
+            db.collection('materias').doc(materia.id).update({ videos: videos })
+                .then(function() {
+                    input.value = '';
+                    carregarMateriasPrimeiro();
+                    setTimeout(function() { editarMateria(index); }, 100);
+                })
+                .catch(function(error) {
+                    alert('Erro ao adicionar vídeo: ' + error.message);
+                });
+        }
+
+        function adicionarTeste(index) {
+            var input = document.getElementById('testeInput_' + index);
+            var link = input.value.trim();
+
+            if (link === '') {
+                alert('Digite o link do teste.');
+                return;
+            }
+
+            var materia = todasMaterias[index];
+            var testes = materia.testes || [];
+            testes.push(link);
+
+            db.collection('materias').doc(materia.id).update({ testes: testes })
+                .then(function() {
+                    input.value = '';
+                    carregarMateriasPrimeiro();
+                    setTimeout(function() { editarMateria(index); }, 100);
+                })
+                .catch(function(error) {
+                    alert('Erro ao adicionar teste: ' + error.message);
+                });
+        }
+
+        function removerItem(index, tipo, itemIndex) {
+            var materia = todasMaterias[index];
+            var lista = materia[tipo] || [];
+            lista.splice(itemIndex, 1);
+
+            var update = {};
+            update[tipo] = lista;
+
+            db.collection('materias').doc(materia.id).update(update)
+                .then(function() {
+                    carregarMateriasPrimeiro();
+                    setTimeout(function() { editarMateria(index); }, 100);
+                })
+                .catch(function(error) {
+                    alert('Erro ao remover item: ' + error.message);
+                });
+        }
+
+        // ============================
+        // SUGESTÕES - ADMIN
+        // ============================
+
+        function carregarSugestoesAdmin() {
+            var lista = document.getElementById('listaSugestoesAdmin');
+            lista.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">🔄 Carregando sugestões...</p>';
+
+            db.collection('sugestoes').orderBy('data', 'desc').get()
+                .then(function(snapshot) {
+                    if (snapshot.empty) {
+                        lista.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">💡 Nenhuma sugestão recebida ainda.</p>';
+                        return;
+                    }
+
+                    var html = '';
+                    snapshot.forEach(function(doc) {
+                        var sugestao = doc.data();
+                        var id = doc.id;
+                        var dataFormatada = sugestao.data ? new Date(sugestao.data.seconds * 1000).toLocaleDateString('pt-BR') : 'Data desconhecida';
+
+                        html += `
+                            <div class="sugestao-item" id="sugestao_${id}">
+                                <div class="header-sugestao">
+                                    <span class="nome">👤 ${sugestao.nome || 'Anônimo'}</span>
+                                    <span class="data">📅 ${dataFormatada}</span>
+                                </div>
+                                <div class="texto-sugestao" id="texto_sugestao_${id}">${sugestao.texto}</div>
+                                <div class="acoes-sugestao">
+                                    <button class="btn-editar-sugestao" onclick="editarSugestao('${id}')">✏️ Editar</button>
+                                    <button class="btn-excluir-sugestao" onclick="excluirSugestao('${id}')">🗑️ Excluir</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    lista.innerHTML = html;
+                })
+                .catch(function(error) {
+                    lista.innerHTML = '<p style="text-align:center; color:#e74c3c; padding:20px;">❌ Erro ao carregar sugestões: ' + error.message + '</p>';
+                    console.error('Erro ao carregar sugestões:', error);
+                });
+        }
+
+        function excluirSugestao(id) {
+            if (confirm('Tem certeza que deseja excluir esta sugestão?')) {
+                db.collection('sugestoes').doc(id).delete()
+                    .then(function() {
+                        carregarSugestoesAdmin();
+                        alert('✅ Sugestão excluída com sucesso!');
+                    })
+                    .catch(function(error) {
+                        alert('❌ Erro ao excluir sugestão: ' + error.message);
+                    });
+            }
+        }
+
+        function editarSugestao(id) {
+            var textoAtual = document.getElementById('texto_sugestao_' + id).textContent;
+            var novoTexto = prompt('✏️ Edite a sugestão:', textoAtual);
+            
+            if (novoTexto !== null && novoTexto.trim() !== '') {
+                db.collection('sugestoes').doc(id).update({
+                    texto: novoTexto.trim()
+                })
+                .then(function() {
+                    carregarSugestoesAdmin();
+                    alert('✅ Sugestão editada com sucesso!');
+                })
+                .catch(function(error) {
+                    alert('❌ Erro ao editar sugestão: ' + error.message);
+                });
+            }
+        }
+
+        // ============================
+        // FECHAR MODAIS COM ESC
+        // ============================
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                fecharModalEditar();
+                fecharModalNotas();
+                fecharModalAddNota();
+            }
+        });
+
+        document.getElementById('modalEditar').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalEditar();
+        });
+
+        document.getElementById('modalNotas').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalNotas();
+        });
+
+        document.getElementById('modalAddNota').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalAddNota();
+        });
+    </script>
+
+</body>
+
+</html>
